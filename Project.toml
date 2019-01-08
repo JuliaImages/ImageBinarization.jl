@@ -1,0 +1,10 @@
+name = "ImageBinarization"
+uuid = "26325222-130f-11e9-0d93-dff71735e8f2"
+authors = ["Dr. Zygmunt L. Szpak <zygmunt.szpak@gmail.com>"]
+version = "0.1.0"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
