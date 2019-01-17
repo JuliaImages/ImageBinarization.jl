@@ -12,6 +12,7 @@ struct Polysegment <: BinarizationAlgorithm end
 
 include("otsu.jl")
 include("polysegment.jl")
+include("util.jl")
 
 export
 	# main functions
