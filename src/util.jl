@@ -16,7 +16,12 @@ function μ_in_window(I::AbstractArray{T,2}, row₀::Integer, col₀::Integer, r
     return μ < eps() ? 0 : μ
 end
 
-function σ_in_window(I²::AbstractArray{T,2}, μ::Real, row₀::Integer, col₀::Integer, row₁::Integer, col₁::Integer) where T <: Real
+function σ²_in_window(I²::AbstractArray{T,2}, μ::Real, row₀::Integer, col₀::Integer, row₁::Integer, col₁::Integer) where T <: Real
     σ² = μ_in_window(I², row₀, col₀, row₁, col₁) - μ^2
     return σ² < eps() ? 0 : sqrt(σ²)
+end
+
+function σ_in_window(I²::AbstractArray{T,2}, μ::Real, row₀::Integer, col₀::Integer, row₁::Integer, col₁::Integer) where T <: Real
+    σ² = σ²_in_window(I², row₀, col₀, row₁, col₁)
+    return σ² == 0 ? 0 : sqrt(σ²)
 end
