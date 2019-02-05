@@ -4,14 +4,15 @@ authors = ["Dr. Zygmunt L. Szpak <zygmunt.szpak@gmail.com>"]
 version = "0.1.0"
 
 [deps]
+HistogramThresholding = "2c695a8d-9458-5d45-9878-1b8a99cf7853"
 Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 
 [extras]
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 ImageMagick = "6218d12a-5da1-5696-b52f-db25d2ecc6d1"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 TestImages = "5e47fb64-e119-507b-a336-dd2b206d9990"
 
 [targets]
-test = ["Test","TestImages", "ImageMagick"]
+test = ["Test", "TestImages", "ImageMagick"]

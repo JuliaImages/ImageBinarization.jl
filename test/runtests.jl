@@ -1,6 +1,7 @@
-using ImageBinarization
+using ImageBinarization, Images, TestImages
 using Test
 
 @testset "ImageBinarization.jl" begin
-    # Write your own tests here.
+    include("minimum.jl")
+    include("intermodes.jl")
 end
