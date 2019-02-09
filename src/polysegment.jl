@@ -33,7 +33,7 @@ function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: A
 end
 
 function binarize!(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: AbstractGray
-  # Construct data matrix for second-degree polynomial (Equation 2.3).
+  # Construct data matrix for second-degree polynomial (Equation 2.3) in [1].
   x = vec(img)
   Lₙ = hcat(ones(length(x)), x, x.^2)
   F = svd(Lₙ)
