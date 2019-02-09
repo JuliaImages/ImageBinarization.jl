@@ -1,7 +1,8 @@
-using ImageBinarization, Images, TestImages
-using Test
+using ImageBinarization
+using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers
 
 @testset "ImageBinarization.jl" begin
-    include("minimum.jl")
+    include("polysegment.jl")
+     include("minimum.jl")
     include("intermodes.jl")
 end

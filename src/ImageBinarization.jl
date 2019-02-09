@@ -1,6 +1,8 @@
 module ImageBinarization
 
-using Images
+using ImageContrastAdjustment
+using ColorTypes
+using ColorVectorSpace
 using LinearAlgebra
 using HistogramThresholding
 using Polynomials
