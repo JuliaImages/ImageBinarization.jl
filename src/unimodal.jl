@@ -55,6 +55,9 @@ binarize!(UnimodalRosin(),img)
 
 # See Also
 """
+function binarize(algorithm::UnimodalRosin,  img::AbstractArray{T,2}) where T <: AbstractGray
+  binarize!(algorithm, copy(img))
+end
 
 function binarize!(algorithm::UnimodalRosin,  img::AbstractArray{T,2}) where T <: AbstractGray
   edges, counts = build_histogram(img,  256)
