@@ -1,6 +1,7 @@
 """
 ```
-t = binarize(Otsu(), img)
+imgb = binarize(Otsu(), img)
+binarize!(Otsu(), img)
 ```
 
 Under the assumption that the histogram is bimodal the threshold is

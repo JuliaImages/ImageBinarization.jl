@@ -1,6 +1,7 @@
 """
 ```
-t = binarize(Polysegment(), img)
+imgb = binarize(Polysegment(), img)
+binarize!(Polysegment(), img)
 ```
 
 Uses the *polynomial segmentation* technique to group the image pixels
