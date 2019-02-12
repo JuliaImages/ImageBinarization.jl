@@ -1,7 +1,7 @@
 """
 ```
-t = binarize(MinimumIntermodes(), img)
-t = binarize!(MinimumIntermodes(), img)
+imgb = binarize(MinimumIntermodes(), img)
+binarize!(MinimumIntermodes(), img)
 ```
 
 nder the assumption that the histogram is bimodal the images histogram is
