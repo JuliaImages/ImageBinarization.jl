@@ -69,7 +69,7 @@ function binarize(algorithm::AdaptiveThreshold, img::AbstractArray{T}, t::Int, s
     if s < 0 || t < 0 || t > 100
         return error("s and t must be greater than or equal to 0. t must be less than equal 100")
     end
-    integral_img = integral_image(img)
+    integral_img = Images.integral_image(img)
     output_img = copy(img)
     w = size(img)[2]
     h = size(img)[1]
@@ -79,7 +79,7 @@ function binarize(algorithm::AdaptiveThreshold, img::AbstractArray{T}, t::Int, s
         y2 = min(h,j+div(s,2))
         x1 = max(1,k-div(s,2))
         x2 = min(w,k+div(s,2))
-        total = boxdiff(integral_img, y1:y2, x1:x2)
+        total = Images.boxdiff(integral_img, y1:y2, x1:x2)
         count = (y2-y1)*(x2-x1)
         if img[i]*count <= total*((100-t)/100)
             output_img[i]=0

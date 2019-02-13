@@ -7,6 +7,8 @@ using LinearAlgebra
 using HistogramThresholding
 using Polynomials
 
+import Images
+
 abstract type BinarizationAlgorithm end
 struct Otsu <: BinarizationAlgorithm end
 struct Polysegment <: BinarizationAlgorithm end
