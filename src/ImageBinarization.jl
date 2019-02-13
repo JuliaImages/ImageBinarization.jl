@@ -12,12 +12,14 @@ struct Otsu <: BinarizationAlgorithm end
 struct Polysegment <: BinarizationAlgorithm end
 struct MinimumIntermodes <: BinarizationAlgorithm end
 struct Intermodes <: BinarizationAlgorithm end
+struct MinimumError <: BinarizationAlgorithm end
 
 
 include("otsu.jl")
 include("polysegment.jl")
 include("minimum.jl")
 include("intermodes.jl")
+include("minimum_error.jl")
 
 export
 	# main functions
@@ -26,5 +28,6 @@ export
 	Otsu,
 	Polysegment,
   	MinimumIntermodes,
-  	Intermodes
+  	Intermodes,
+	MinimumError
 end # module
