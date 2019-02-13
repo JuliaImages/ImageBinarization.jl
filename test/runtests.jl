@@ -1,6 +1,8 @@
 using ImageBinarization
 using Test
+using Images
+using TestImages
 
 @testset "ImageBinarization.jl" begin
-    # Write your own tests here.
+    include("adaptive_threshold.jl")
 end
