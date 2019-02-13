@@ -1,7 +1,7 @@
 """
 ```
-t = binarize(Polysegment(), img)
-t = binarize!(Polysegment(), img)
+imgb = binarize(Polysegment(), img)
+binarize!(Polysegment(), img)
 ```
 
 Uses the *polynomial segmentation* technique to group the image pixels
@@ -32,8 +32,14 @@ function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: A
   binarize!(algorithm, copy(img))
 end
 
+"""
+```
+t = binarize!(Polysegment(), img)
+```
+Same as [`binarize`](@ref binarize(::Polysegment, ::AbstractArray{<:AbstractGray,2})) except that it modifies the image that was passed as an argument.
+"""
 function binarize!(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: AbstractGray
-  # Construct data matrix for second-degree polynomial (Equation 2.3).
+  # Construct data matrix for second-degree polynomial (Equation 2.3) in [1].
   x = vec(img)
   Lₙ = hcat(ones(length(x)), x, x.^2)
   F = svd(Lₙ)

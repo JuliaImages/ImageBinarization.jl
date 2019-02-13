@@ -1,6 +1,9 @@
 using ImageBinarization
-using Test
+using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers
 
 @testset "ImageBinarization.jl" begin
-    # Write your own tests here.
+    include("polysegment.jl")
+    include("minimum.jl")
+    include("intermodes.jl")
+    include("adaptive_threshold.jl")
 end
