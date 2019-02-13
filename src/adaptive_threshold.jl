@@ -63,6 +63,7 @@ binarize(AdaptiveThreshold(),img,15,80)
 # References
 [1] Bradley, D. (2007). Adaptive Thresholding using Integral Image. Journal of Graphic Tools, 12(2), pp.13-21.
 """
+
 #(1)
 function binarize(algorithm::AdaptiveThreshold, img::AbstractArray{T}, t::Int, s::Int) where T <: Gray
     if s < 0 || t < 0 || t > 100
@@ -143,4 +144,10 @@ end
 #(8) calls (7)
 function binarize!(algorithm::AdaptiveThreshold, img::AbstractArray{T}, t::Int) where T <: Colorant
     binarize!(AdaptiveThreshold(),img,t,get_s(img))
+end
+
+#utility function for AdaptiveThreshold
+function get_s(img::AbstractArray)
+    s = div(div((size(img)[2]+size(img)[1]),2),8)
+    s
 end

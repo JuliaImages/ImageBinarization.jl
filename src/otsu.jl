@@ -1,7 +1,7 @@
 """
 ```
-t = binarize(Otsu(), img)
-t = binarize!(Otsu(), img)
+imgb = binarize(Otsu(), img)
+binarize!(Otsu(), img)
 ```
 
 Under the assumption that the histogram is bimodal the threshold is
@@ -24,6 +24,13 @@ function binarize(algorithm::Otsu,  img::AbstractArray{T,2}) where T <: Abstract
   binarize!(algorithm, copy(img))
 end
 
+
+"""
+```
+t = binarize!(Otsu(), img)
+```
+Same as [`binarize`](@ref binarize(::Otsu, ::AbstractArray{<:AbstractGray,2})) except that it modifies the image that was passed as an argument.
+"""
 function binarize!(algorithm::Otsu,  img::AbstractArray{T,2}) where T <: AbstractGray
   edges, counts = build_histogram(img,  256)
   t = find_threshold(HistogramThresholding.Otsu(), counts[1:end], edges)
