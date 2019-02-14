@@ -86,6 +86,26 @@ Sauvola
 Niblack
 </td>
 </tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="docs/src/images/cells_Adaptive.jpg" width="100px" alt="Adaptive" />
+<br />
+Adaptive
+</td>
+
+<td align="center" valign="center">
+<img src="docs/src/images/cells_Yen.jpg" width="100px" alt="Yen" />
+<br />
+Yen
+</td>
+
+<td align="center" valign="center">
+<img src="docs/src/images/cells_Balanced.jpg" width="100px" alt="Balanced" />
+<br />
+Balanced
+</td>
+</tr>
 </table>
 
 <h>Image of moon surface: (Unimodal)</h>
@@ -158,6 +178,26 @@ Sauvola
 Niblack
 </td>
 </tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="docs/src/images/moon_Adaptive.jpg" width="100px" alt="Adaptive" />
+<br />
+Adaptive
+</td>
+
+<td align="center" valign="center">
+<img src="docs/src/images/moon_Yen.jpg" width="100px" alt="Yen" />
+<br />
+Yen
+</td>
+
+<td align="center" valign="center">
+<img src="docs/src/images/moon_Balanced.jpg" width="100px" alt="Balanced" />
+<br />
+Balanced
+</td>
+</tr>
 </table>
 
 <h>Image of text:</h>
@@ -228,6 +268,26 @@ Sauvola
 <img src="docs/src/images/page_niblack.png" width="100px" alt="Niblack" />
 <br />
 Niblack
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="docs/src/images/page_Adaptive.jpg" width="100px" alt="Adaptive" />
+<br />
+Adaptive
+</td>
+
+<td align="center" valign="center">
+<img src="docs/src/images/page_Yen.jpg" width="100px" alt="yen" />
+<br />
+Yen
+</td>
+
+<td align="center" valign="center">
+<img src="docs/src/images/page_Balanced.jpg" width="100px" alt="Balanced" />
+<br />
+Balanced
 </td>
 </tr>
 </table>
