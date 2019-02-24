@@ -1,21 +1,23 @@
 @testset "balanced" begin
-    img = testimage("cameraman")
-    img2 = copy(img)
-    img_binary = binarize(Balanced(), img)
+    original_image = testimage("lena")
+    for T in (Gray{N0f8}, Gray{N0f16}, Gray{Float32}, Gray{Float64})
+        img = T.(original_image)
+        img₀₁ = binarize(Balanced(), img)
 
-    #check original img is unchanged
-    @test img == img2
+        # Check original image is unchanged.
+        @test img == T.(testimage("lena"))
 
-    #check that the image only has ones or zeros
-    non_zeros = findall(x -> x != 0.0 && x != 1.0, img_binary)
-    @test length(non_zeros) == 0
+        # Check that the image only has ones or zeros.
+        non_zeros = findall(x -> x != 0.0 && x != 1.0, img₀₁)
+        @test length(non_zeros) == 0
 
-    #check type of outputed img
-    @test typeof(img_binary) == typeof(img)
+        # Check type of binarized image.
+        @test typeof(img₀₁) == Array{Gray{Bool},2}
 
-    #check ones and zeros have been assigned to the correct side of the threshold
-    max,maxpos=findmax(img)
-    @test img_binary[maxpos] == 1
-    min,minpos=findmin(img)
-    @test img_binary[minpos] == 0
+        # Check that ones and zeros have been assigned to the correct side of the threshold.
+        maxval, maxpos = findmax(Gray.(img))
+        @test img₀₁[maxpos] == 1
+        minval, minpos = findmin(Gray.(img))
+        @test img₀₁[minpos] == 0
+    end
 end
