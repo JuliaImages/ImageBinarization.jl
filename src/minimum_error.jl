@@ -1,6 +1,6 @@
 @doc raw"""
 ```
-t = find_threshold(MinimumError(), histogram, edges)
+binarize(MinimumError(), img)
 ```
 
 Under the assumption that the histogram is a mixture of two Gaussian
