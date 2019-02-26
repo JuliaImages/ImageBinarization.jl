@@ -3,7 +3,7 @@
 binarize(MinimumError(), img)
 ```
 
-Under the assumption that the histogram is a mixture of two Gaussian
+Under the assumption that the image histogram is a mixture of two Gaussian
 distributions the binarization threshold is chosen such that the expected
 misclassification error rate is minimised.
 

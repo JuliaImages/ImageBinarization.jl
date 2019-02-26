@@ -16,6 +16,7 @@ struct Intermodes <: BinarizationAlgorithm end
 struct MinimumError <: BinarizationAlgorithm end
 struct Balanced <: BinarizationAlgorithm end
 struct Yen <: BinarizationAlgorithm end
+struct Entropy <: BinarizationAlgorithm end
 
 include("balanced.jl")
 include("otsu.jl")
@@ -25,6 +26,7 @@ include("minimum.jl")
 include("intermodes.jl")
 include("minimum_error.jl")
 include("yen.jl")
+include("entropy.jl")
 
 
 export
@@ -37,5 +39,6 @@ export
     MinimumIntermodes,
     Intermodes,
     MinimumError,
-    UnimodalRosin
+    UnimodalRosin,
+    Entropy
 end # module

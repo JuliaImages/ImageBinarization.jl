@@ -10,4 +10,5 @@ using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers
     include("yen.jl")
     include("balanced.jl")
     include("otsu.jl")
+    include("entropy.jl")
 end

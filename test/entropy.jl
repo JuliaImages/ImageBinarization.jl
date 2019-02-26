@@ -1,12 +1,11 @@
-@testset "unimodal" begin
-
-    original_image = testimage("moonsurface")
+@testset "entropy" begin
+    original_image = testimage("lena")
     for T in (Gray{N0f8}, Gray{N0f16}, Gray{Float32}, Gray{Float64})
         img = T.(original_image)
-        img₀₁ = binarize(UnimodalRosin(), img)
+        img₀₁ = binarize(Entropy(), img)
 
         # Check original image is unchanged.
-        @test img == T.(testimage("moonsurface"))
+        @test img == T.(testimage("lena"))
 
         # Check that the image only has ones or zeros.
         non_zeros = findall(x -> x != 0.0 && x != 1.0, img₀₁)
@@ -21,5 +20,4 @@
         minval, minpos = findmin(Gray.(img))
         @test img₀₁[minpos] == 0
     end
-
 end

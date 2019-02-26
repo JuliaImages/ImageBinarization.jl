@@ -2,15 +2,15 @@
 ```
 binarize(UnimodalRosin(), img)
 ```
+Uses Rosin's Unimodal threshold algorithm to binarize the image.
 
-Generates a binarization threshold assuming a unimodal distribution using Rosin's algorithm.
 
 # Output
 
 Returns the binarized image as an `Array{Gray{Bool},2}`.
 
 # Details
-This algorithm first selects the bin in the histogram with the highest
+This algorithm first selects the bin in the image histogram with the highest
 frequency. The algorithm then searches from the location of the maximum bin to
 the last bin of the histogram for the first bin with a frequency of 0 (known as
 the minimum bin.). A line is then drawn that passes through both the maximum and

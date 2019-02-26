@@ -3,7 +3,7 @@
 binarize(Intermodes(), img)
 ```
 
-Under the assumption that the image histogram is bimodal the histogram is
+Under the assumption that the image histogram is bimodal the image histogram is
 smoothed using a length-3 mean filter until two modes remain. The binarization
 threshold is then set to the average value of the two modes.
 
