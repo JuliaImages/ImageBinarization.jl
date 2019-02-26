@@ -7,4 +7,5 @@ binarize(::Yen, ::AbstractArray{<:Colorant,2})
 binarize(::Balanced, ::AbstractArray{<:Colorant,2})
 binarize(::Intermodes, ::AbstractArray{<:Colorant,2})
 binarize(::MinimumIntermodes, ::AbstractArray{<:Colorant,2})
+binarize(::MinimumError, ::AbstractArray{<:Colorant,2})
 ```
