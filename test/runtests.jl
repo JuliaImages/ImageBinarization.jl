@@ -5,6 +5,7 @@ using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers
     include("polysegment.jl")
     include("minimum.jl")
     include("intermodes.jl")
+    include("minimum_error.jl")
     include("yen.jl")
     include("balanced.jl")
     include("otsu.jl")
