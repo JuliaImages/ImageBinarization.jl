@@ -13,7 +13,7 @@ var documenterSearchIndex = {"docs": [
     "page": "ImageBinarization.jl Documentation",
     "title": "ImageBinarization.jl Documentation",
     "category": "section",
-    "text": "binarize(::Otsu, ::AbstractArray{<:Colorant,2})\nbinarize(::Polysegment, ::AbstractArray{<:Colorant,2})\nbinarize(::Yen, ::AbstractArray{<:Colorant,2})\nbinarize(::Balanced, ::AbstractArray{<:Colorant,2})\nbinarize(::Intermodes, ::AbstractArray{<:Colorant,2})\nbinarize(::MinimumIntermodes, ::AbstractArray{<:Colorant,2})\nbinarize(::MinimumError, ::AbstractArray{<:Colorant,2})\nbinarize(::UnimodalRosin, ::AbstractArray{<:Colorant,2})"
+    "text": "binarize(::Otsu, ::AbstractArray{<:Colorant,2})\nbinarize(::Polysegment, ::AbstractArray{<:Colorant,2})\nbinarize(::Yen, ::AbstractArray{<:Colorant,2})\nbinarize(::Balanced, ::AbstractArray{<:Colorant,2})\nbinarize(::Intermodes, ::AbstractArray{<:Colorant,2})\nbinarize(::MinimumIntermodes, ::AbstractArray{<:Colorant,2})\nbinarize(::MinimumError, ::AbstractArray{<:Colorant,2})\nbinarize(::UnimodalRosin, ::AbstractArray{<:Colorant,2})\nbinarize(::Entropy, ::AbstractArray{<:Colorant,2})"
 },
 
 ]}
