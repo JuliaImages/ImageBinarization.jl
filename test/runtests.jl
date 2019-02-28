@@ -1,5 +1,5 @@
 using ImageBinarization
-using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers
+using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers, Statistics
 
 @testset "ImageBinarization.jl" begin
     include("polysegment.jl")
@@ -11,4 +11,7 @@ using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers
     include("balanced.jl")
     include("otsu.jl")
     include("entropy.jl")
+    include("util.jl")
+    #include("sauvola.jl")
+    #include("niblack.jl")
 end

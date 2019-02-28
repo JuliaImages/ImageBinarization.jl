@@ -6,7 +6,7 @@
         img[target_row,target_col] = 0.2
 
         img_bin = binarize(Sauvola(), img)
-        @test eltype(img) == eltype(img_bin)
+        @test eltype(img_bin) == eltype(Gray{Bool})
 
         for i in 0:10:50, j in 0:10:50
             img₀ = circshift(img, (i,j))

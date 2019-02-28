@@ -13,6 +13,7 @@ abstract type BinarizationAlgorithm end
 struct Otsu <: BinarizationAlgorithm end
 struct Polysegment <: BinarizationAlgorithm end
 struct Sauvola <: BinarizationAlgorithm end
+struct Niblack <: BinarizationAlgorithm end
 struct UnimodalRosin <: BinarizationAlgorithm end
 struct MinimumIntermodes <: BinarizationAlgorithm end
 struct Intermodes <: BinarizationAlgorithm end
@@ -22,6 +23,7 @@ struct Yen <: BinarizationAlgorithm end
 struct Entropy <: BinarizationAlgorithm end
 
 include("integral_image.jl")
+include("util.jl")
 include("balanced.jl")
 include("otsu.jl")
 include("polysegment.jl")
@@ -32,6 +34,7 @@ include("minimum_error.jl")
 include("yen.jl")
 include("entropy.jl")
 include("sauvola.jl")
+include("niblack.jl")
 
 export
 	# main functions
@@ -45,5 +48,6 @@ export
     MinimumError,
     UnimodalRosin,
     Entropy,
-    Sauvola
+    Sauvola,
+	Niblack
 end # module
