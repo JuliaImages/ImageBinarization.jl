@@ -6,10 +6,12 @@ using ColorVectorSpace
 using LinearAlgebra
 using HistogramThresholding
 using Polynomials
+using Statistics
 
 abstract type BinarizationAlgorithm end
 struct Otsu <: BinarizationAlgorithm end
 struct Polysegment <: BinarizationAlgorithm end
+struct Sauvola <: BinarizationAlgorithm end
 struct UnimodalRosin <: BinarizationAlgorithm end
 struct MinimumIntermodes <: BinarizationAlgorithm end
 struct Intermodes <: BinarizationAlgorithm end
@@ -27,7 +29,7 @@ include("intermodes.jl")
 include("minimum_error.jl")
 include("yen.jl")
 include("entropy.jl")
-
+include("sauvola.jl")
 
 export
 	# main functions
@@ -40,5 +42,6 @@ export
     Intermodes,
     MinimumError,
     UnimodalRosin,
-    Entropy
+    Entropy,
+    Sauvola
 end # module
