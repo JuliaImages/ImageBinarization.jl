@@ -7,6 +7,7 @@ using LinearAlgebra
 using HistogramThresholding
 using Polynomials
 using Statistics
+using ImageCore
 
 abstract type BinarizationAlgorithm end
 struct Otsu <: BinarizationAlgorithm end
@@ -20,6 +21,7 @@ struct Balanced <: BinarizationAlgorithm end
 struct Yen <: BinarizationAlgorithm end
 struct Entropy <: BinarizationAlgorithm end
 
+include("integral_image.jl")
 include("balanced.jl")
 include("otsu.jl")
 include("polysegment.jl")

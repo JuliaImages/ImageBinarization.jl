@@ -1,33 +1,14 @@
 """
 ```
-img_bin = binarize(Sauvola(), img, w = 7, k = 0.2)
+img_bin = binarize(Sauvola(), img; w = 7, k = 0.2)
 ```
 
-Applies Sauvola--Pietikäinen adaptive thresholding [1] under the assumption that
+Applies Sauvola--Pietikäinen adaptive image binarization [1] under the assumption that
 the input image is textual.
-
-# Parameters
-
-## `img`
-
-An `AbstractGray` image, which is binarized according to a per-pixel adaptive
-threshold into background (`Gray(0)`) and foreground (`Gray(1)`) pixel values.
-
-## `w`
-
-The threshold for each pixel is a function of the distribution of the intensities
-of all neighboring pixels in a square window around it. The side length of this
-window is `2*w + 1`, with the target pixel in the center position.
-
-## `k`
-
-A user-defined biasing parameter. This can take negative values, though values
-in the range [0.2, 0.5] are typical.
 
 # Output
 
-Returns an AbstractArray{T,2} where T is the element type of the input image,
-representing a binarized copy of the input image.
+Returns the binarized image as an `Array{Gray{Bool},2}`.
 
 # Details
 
@@ -50,7 +31,8 @@ in the binarized image. Sauvola and Pietikäinen [1] introduce the dynamic range
 space), such that the threshold is given by
 
 ```math
-T(x,y) = m(x,y) \\cdot \\left[ 1 + k \\cdot \\left( \\frac{s(x,y)}{R} - 1 \\right) \\right]```
+T(x,y) = m(x,y) \\cdot \\left[ 1 + k \\cdot \\left( \\frac{s(x,y)}{R} - 1 \\right) \\right]
+```
 
 This adaptively amplifies the contribution made by the standard deviation to the
 value of ``T``.
@@ -61,27 +43,38 @@ to calculate the values of ``m`` and ``s`` for each pixel in constant time.
 Since each of these data structures can be computed in a single pass over the
 source image, runtime is significantly improved.
 
+# Arguments
+
+## `img`
+
+An `AbstractGray` image, which is binarized according to a per-pixel adaptive
+threshold into background (`Gray(0)`) and foreground (`Gray(1)`) pixel values.
+
+## `w`
+
+The threshold for each pixel is a function of the distribution of the intensities
+of all neighboring pixels in a square window around it. The side length of this
+window is `2*w + 1`, with the target pixel in the center position.
+
+## `k`
+
+A user-defined biasing parameter. This can take negative values, though values
+in the range [0.2, 0.5] are typical.
+
+
+
 # References
 
 [1] J. Sauvola and M. Pietikäinen (2000). "Adaptive document image binarization". *Pattern Recognition* 33 (2): 225-236. [doi:10.1016/S0031-3203(99)00055-2](https://doi.org/10.1016/S0031-3203(99)00055-2)
 [2] Wayne Niblack (1986). *An Introduction to Image Processing*. Prentice-Hall, Englewood Cliffs, NJ: 115-16.
 [3] Faisal Shafait, Daniel Keysers and Thomas M. Breuel (2008). "Efficient implementation of local adaptive thresholding techniques using integral images". Proc. SPIE 6815, Document Recognition and Retrieval XV, 681510 (28 January 2008). [doi:10.1117/12.767755](https://doi.org/10.1117/12.767755)
 """
-function binarize(algorithm::Sauvola, img::AbstractArray{T,2}; w::Integer = 7,
-                  k::Real = 0.2) where T <: AbstractGray
-    binarize!(algorithm, img, w=w, k=k)
+function binarize(algorithm::Sauvola, img::AbstractArray{T,2}; w::Integer = 7, k::Real = 0.2) where T <: Colorant
+    binarize(algorithm, Gray.(img), w = w, k = k)
 end
 
-"""
-```
-img_bin = binarize!(Sauvola(), img, w = 7, k = 0.2)
-```
-
-Same as [`binarize`](@ref binarize(::Sauvola, ::AbstractArray{<:AbstractGray,2}; ::Integer, ::Real))
-except that it modifies the image that was passed as an argument.
-"""
-function binarize!(algorithm::Sauvola, img::AbstractArray{T,2}; w::Integer = 7,
-                   k::Real = 0.2) where T <: AbstractGray
+function binarize(algorithm::Sauvola, img::AbstractArray{T,2}; w::Integer = 7, k::Real = 0.2) where T <: AbstractGray
+    img₀₁ = zeros(Gray{Bool}, axes(img))
     img_raw = channelview(img)
     I = integral_image(img_raw)
     I² = integral_image(img_raw.^2)
@@ -95,8 +88,8 @@ function binarize!(algorithm::Sauvola, img::AbstractArray{T,2}; w::Integer = 7,
     end
 
     for pixel in CartesianIndices(img)
-        img[pixel] = img[pixel] <= threshold(pixel) ? Gray(0) : Gray(1)
+        img₀₁[pixel] = img[pixel] <= threshold(pixel) ? 0 : 1
     end
 
-    return img
+    return img₀₁
 end
