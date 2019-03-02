@@ -12,6 +12,6 @@ using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers, Statist
     include("otsu.jl")
     include("entropy.jl")
     include("util.jl")
-    #include("sauvola.jl")
-    #include("niblack.jl")
+    include("sauvola.jl")
+    include("niblack.jl")
 end

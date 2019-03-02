@@ -37,9 +37,9 @@ img_binary = binarize(Polysegment(), img)
 
 ## Reference
 
-[1] R. E. Vidal, "Generalized Principal Component Analysis (GPCA): An Algebraic Geometric Approach to Subspace Clustering and Motion Segmentation." Order No. 3121739, University of California, Berkeley, Ann Arbor, 2003.
+1. R. E. Vidal, "Generalized Principal Component Analysis (GPCA): An Algebraic Geometric Approach to Subspace Clustering and Motion Segmentation." Order No. 3121739, University of California, Berkeley, Ann Arbor, 2003.
 """
-function binarize(algorithm::Polysegment,  img::AbstractArray{T}) where T <: Gray
+function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: Gray
   # Construct data matrix for second-degree polynomial (Equation 2.3) in [1].
   x = vec(img)
   Lₙ = hcat(ones(length(x)), x, x.^2)
@@ -56,6 +56,6 @@ function binarize(algorithm::Polysegment,  img::AbstractArray{T}) where T <: Gra
   img₀₁
 end
 
-function binarize(algorithm::Polysegment,  img::AbstractArray{T}) where T <: Colorant
+function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: Colorant
   binarize(Polysegment(), Gray.(img))
 end

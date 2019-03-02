@@ -51,8 +51,8 @@ A user-defined biasing parameter. This can take negative values.
 
 # References
 
-[1] Wayne Niblack (1986). *An Introduction to Image Processing*. Prentice-Hall, Englewood Cliffs, NJ: 115-16.
-[2] J. Sauvola and M. Pietikäinen (2000). "Adaptive document image binarization". *Pattern Recognition* 33 (2): 225-236. [doi:10.1016/S0031-3203(99)00055-2](https://doi.org/10.1016/S0031-3203(99)00055-2)
+1. Wayne Niblack (1986). *An Introduction to Image Processing*. Prentice-Hall, Englewood Cliffs, NJ: 115-16.
+2. J. Sauvola and M. Pietikäinen (2000). "Adaptive document image binarization". *Pattern Recognition* 33 (2): 225-236. [doi:10.1016/S0031-3203(99)00055-2](https://doi.org/10.1016/S0031-3203(99)00055-2)
 """
 function binarize(algorithm::Niblack, img::AbstractArray{T,2}; w::Integer = 7,  k::Real = 0.2) where T <: Colorant
     binarize(algorithm, Gray.(img), w = w, k = k)
