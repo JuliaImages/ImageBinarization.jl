@@ -1,29 +1,25 @@
 
 @testset "adaptive_threshold" begin
+    original_image = testimage("lena")
+    for T in (Gray{N0f8}, Gray{N0f16}, Gray{Float32}, Gray{Float64})
+        img = T.(original_image)
+        img₀₁ = binarize(AdaptiveThreshold(), img)
 
-    img = testimage("cameraman")
-    img2 = testimage("cameraman")
-    img3 = testimage("mandrill")
+        # Check original image is unchanged.
+        @test img == T.(testimage("lena"))
 
-    #Basic function test without s
-    @test typeof(binarize(AdaptiveThreshold(),img,15)) == typeof(testimage("cameraman"))
-    #Basic mutating function test s
-    binarize!(AdaptiveThreshold(),img2,15)
-    @test typeof(img2) == typeof(img)
-    #Ensures error is produced when bad inputs passed
-    @test_throws ErrorException binarize(AdaptiveThreshold(), img3, -1)
-    @test_throws ErrorException binarize(AdaptiveThreshold(), img3, 15, -2)
-    @test_throws ErrorException binarize(AdaptiveThreshold(), img3, 101)
+        # Check that the image only has ones or zeros.
+        non_zeros = findall(x -> x != 0.0 && x != 1.0, img₀₁)
+        @test length(non_zeros) == 0
 
-    #Ensures that the gray type passed and returned are the same
-    for T in (Gray{N0f8}, Gray{N0f16}, Gray{N0f32}, Gray{Float32}, Gray{Float64})
-        T.(img)
-        @test typeof(binarize(AdaptiveThreshold(),img,15)) == typeof(img)
-    end
+        # Check type of binarized image.
+        @test typeof(img₀₁) == Array{Gray{Bool},2}
 
-    for T in (RGB{N0f8}, RGB{N0f16}, RGB{Float32}, RGB{Float64})
-        T.(img3)
-        @test typeof(binarize(AdaptiveThreshold(), img3, 15)) == typeof(img)
+        # Check that ones and zeros have been assigned to the correct side of the threshold.
+        maxval, maxpos = findmax(Gray.(img))
+        @test img₀₁[maxpos] == 1
+        minval, minpos = findmin(Gray.(img))
+        @test img₀₁[minpos] == 0
     end
 
 end
