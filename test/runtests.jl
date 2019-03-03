@@ -3,6 +3,7 @@ using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers, Statist
 
 @testset "ImageBinarization.jl" begin
     include("polysegment.jl")
+    include("adaptive_threshold.jl")
     include("unimodal.jl")
     include("minimum.jl")
     include("intermodes.jl")

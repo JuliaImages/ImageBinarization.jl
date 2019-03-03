@@ -9,6 +9,8 @@ using Polynomials
 using Statistics
 using ImageCore
 
+import Images
+
 abstract type BinarizationAlgorithm end
 struct Otsu <: BinarizationAlgorithm end
 struct Polysegment <: BinarizationAlgorithm end
@@ -17,6 +19,7 @@ struct Niblack <: BinarizationAlgorithm end
 struct UnimodalRosin <: BinarizationAlgorithm end
 struct MinimumIntermodes <: BinarizationAlgorithm end
 struct Intermodes <: BinarizationAlgorithm end
+struct AdaptiveThreshold <: BinarizationAlgorithm end
 struct MinimumError <: BinarizationAlgorithm end
 struct Balanced <: BinarizationAlgorithm end
 struct Yen <: BinarizationAlgorithm end
@@ -30,15 +33,18 @@ include("polysegment.jl")
 include("unimodal.jl")
 include("minimum.jl")
 include("intermodes.jl")
+include("adaptive_threshold.jl")
 include("minimum_error.jl")
 include("yen.jl")
 include("entropy.jl")
 include("sauvola.jl")
 include("niblack.jl")
 
+
 export
 	# main functions
     binarize,
+    AdaptiveThreshold,
     Otsu,
     Balanced,
     Yen,
@@ -49,5 +55,5 @@ export
     UnimodalRosin,
     Entropy,
     Sauvola,
-	Niblack
+    Niblack
 end # module
