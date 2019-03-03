@@ -11,5 +11,6 @@ binarize(::Sauvola,  ::AbstractArray{<: Colorant,2})
 binarize(::UnimodalRosin,  ::AbstractArray{<: Colorant,2})
 binarize(::MinimumError,  ::AbstractArray{<: Colorant,2})
 binarize(::Intermodes,  ::AbstractArray{<: Colorant,2})
-binarize(::Polysegment,  ::AbstractArray{<: Gray,2})
+binarize(::Polysegment,  ::AbstractArray{<: Colorant,2})
+binarize(::AdaptiveThreshold, ::AbstractArray{<: Colorant,2}; ::Int, ::Int)
 ```
