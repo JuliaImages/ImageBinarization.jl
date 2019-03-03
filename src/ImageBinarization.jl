@@ -9,21 +9,33 @@ using Polynomials
 using Statistics
 using ImageCore
 
-import Images
+#import Images
 
 abstract type BinarizationAlgorithm end
 struct Otsu <: BinarizationAlgorithm end
 struct Polysegment <: BinarizationAlgorithm end
-struct Sauvola <: BinarizationAlgorithm end
-struct Niblack <: BinarizationAlgorithm end
 struct UnimodalRosin <: BinarizationAlgorithm end
 struct MinimumIntermodes <: BinarizationAlgorithm end
 struct Intermodes <: BinarizationAlgorithm end
-struct AdaptiveThreshold <: BinarizationAlgorithm end
 struct MinimumError <: BinarizationAlgorithm end
 struct Balanced <: BinarizationAlgorithm end
 struct Yen <: BinarizationAlgorithm end
 struct Entropy <: BinarizationAlgorithm end
+
+struct AdaptiveThreshold <: BinarizationAlgorithm
+	window_size::Int
+	percentage::Int
+end
+
+struct Sauvola <: BinarizationAlgorithm
+    window_size::Int
+    bias::Float32
+end
+
+struct Niblack <: BinarizationAlgorithm
+    window_size::Int
+    bias::Float32
+end
 
 include("integral_image.jl")
 include("util.jl")
@@ -44,6 +56,7 @@ include("niblack.jl")
 export
 	# main functions
     binarize,
+    recommend_size,
     AdaptiveThreshold,
     Otsu,
     Balanced,

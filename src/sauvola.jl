@@ -1,10 +1,10 @@
 """
 ```
-img_bin = binarize(Sauvola(), img; w = 7, k = 0.2)
+binarize(Sauvola(; window_size = 7, bias = 0.2), img)
 ```
 
-Applies Sauvola--Pietikäinen adaptive image binarization [1] under the assumption that
-the input image is textual.
+Applies Sauvola--Pietikäinen adaptive image binarization [1] under the
+assumption that the input image is textual.
 
 # Output
 
@@ -47,21 +47,30 @@ source image, runtime is significantly improved.
 
 ## `img`
 
-An `AbstractGray` image, which is binarized according to a per-pixel adaptive
-threshold into background (`Gray(0)`) and foreground (`Gray(1)`) pixel values.
+An image which is binarized according to a per-pixel adaptive
+threshold into background (0) and foreground (1) pixel values.
 
-## `w`
+## `window_size` (denoted by ``w`` in the publication)
 
 The threshold for each pixel is a function of the distribution of the intensities
 of all neighboring pixels in a square window around it. The side length of this
-window is `2*w + 1`, with the target pixel in the center position.
+window is ``2w + 1``, with the target pixel in the center position.
 
-## `k`
+## `bias` (denoted by ``k`` in the publication)
 
 A user-defined biasing parameter. This can take negative values, though values
 in the range [0.2, 0.5] are typical.
 
+# Example
 
+Binarize the "cameraman" image in the `TestImages` package.
+
+```julia
+using TestImages, ImageBinarization
+
+img = testimage("cameraman")
+img_binary = binarize(Sauvola(window_size = 9, bias = 0.2), img)
+```
 
 # References
 
@@ -69,11 +78,13 @@ in the range [0.2, 0.5] are typical.
 2. Wayne Niblack (1986). *An Introduction to Image Processing*. Prentice-Hall, Englewood Cliffs, NJ: 115-16.
 3. Faisal Shafait, Daniel Keysers and Thomas M. Breuel (2008). "Efficient implementation of local adaptive thresholding techniques using integral images". Proc. SPIE 6815, Document Recognition and Retrieval XV, 681510 (28 January 2008). [doi:10.1117/12.767755](https://doi.org/10.1117/12.767755)
 """
-function binarize(algorithm::Sauvola, img::AbstractArray{T,2}; w::Integer = 7, k::Real = 0.2) where T <: Colorant
-    binarize(algorithm, Gray.(img), w = w, k = k)
+function binarize(algorithm::Sauvola, img::AbstractArray{T,2}) where T <: Colorant
+    binarize(algorithm, Gray.(img))
 end
 
-function binarize(algorithm::Sauvola, img::AbstractArray{T,2}; w::Integer = 7, k::Real = 0.2) where T <: AbstractGray
+function binarize(algorithm::Sauvola, img::AbstractArray{T,2}) where T <: AbstractGray
+    w = algorithm.window_size
+    k = algorithm.bias
     img₀₁ = zeros(Gray{Bool}, axes(img))
     img_raw = channelview(img)
     I = integral_image(img_raw)
@@ -93,3 +104,5 @@ function binarize(algorithm::Sauvola, img::AbstractArray{T,2}; w::Integer = 7, k
 
     return img₀₁
 end
+
+Sauvola(; window_size::Int = 7, bias::Real = 0.2) = Sauvola(window_size, bias)
