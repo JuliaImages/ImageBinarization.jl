@@ -1,11 +1,12 @@
-@testset "Polysegment Binarization" begin
-    original_image = testimage("lena")
+@testset "unimodal" begin
+
+    original_image = testimage("moonsurface")
     for T in (Gray{N0f8}, Gray{N0f16}, Gray{Float32}, Gray{Float64})
         img = T.(original_image)
-        img₀₁ = binarize(Polysegment(), img)
+        img₀₁ = binarize(UnimodalRosin(), img)
 
         # Check original image is unchanged.
-        @test img == T.(testimage("lena"))
+        @test img == T.(testimage("moonsurface"))
 
         # Check that the image only has ones or zeros.
         non_zeros = findall(x -> x != 0.0 && x != 1.0, img₀₁)
@@ -20,4 +21,5 @@
         minval, minpos = findmin(Gray.(img))
         @test img₀₁[minpos] == 0
     end
+
 end

@@ -1,7 +1,6 @@
 """
 ```
-imgb = binarize(Polysegment(), img)
-binarize!(Polysegment(), img)
+binarize(Polysegment(), img)
 ```
 
 Uses the *polynomial segmentation* technique to group the image pixels
@@ -17,37 +16,46 @@ is closest.
 
 # Arguments
 
-The function arguments are described in more detail below.
+The function argument is described in more detail below.
 
 ##  `img`
 
-An `AbstractGray` image which is to be binarized into background (`Gray(0)`)
-and foreground (`Gray(1)`) pixels.
+An `AbstractArray` representing an image. The image is automatically converted
+to `Gray`.
+
+
+# Example
+
+Binarize the "cameraman" image in the `TestImages` package.
+
+```julia
+using TestImages, ImageBinarization
+
+img = testimage("cameraman")
+img_binary = binarize(Polysegment(), img)
+```
 
 ## Reference
 
-[1] R. E. Vidal, "Generalized Principal Component Analysis (GPCA): An Algebraic Geometric Approach to Subspace Clustering and Motion Segmentation." Order No. 3121739, University of California, Berkeley, Ann Arbor, 2003.
+1. R. E. Vidal, "Generalized Principal Component Analysis (GPCA): An Algebraic Geometric Approach to Subspace Clustering and Motion Segmentation." Order No. 3121739, University of California, Berkeley, Ann Arbor, 2003.
 """
-function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: AbstractGray
-  binarize!(algorithm, copy(img))
-end
-
-"""
-```
-t = binarize!(Polysegment(), img)
-```
-Same as [`binarize`](@ref binarize(::Polysegment, ::AbstractArray{<:AbstractGray,2})) except that it modifies the image that was passed as an argument.
-"""
-function binarize!(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: AbstractGray
+function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: Gray
   # Construct data matrix for second-degree polynomial (Equation 2.3) in [1].
   x = vec(img)
   Lₙ = hcat(ones(length(x)), x, x.^2)
   F = svd(Lₙ)
   c = F.Vt[end,:]
   p = Poly(vec(c))
-  μ₁, μ₂ = roots(p)
+  μ₁, μ₂ = sort(roots(p))
   # Binarize the image.
-  map!(img,img) do val
-    (val-μ₁)^2 < (val-μ₂)^2 ? Gray(0) : Gray(1)
+  img₀₁ = zeros(Gray{Bool}, axes(img))
+  for i in CartesianIndices(img)
+    val = img[i]
+    img₀₁[i] = (val-μ₁)^2 < (val-μ₂)^2 ? 0 : 1
   end
+  img₀₁
+end
+
+function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: Colorant
+  binarize(Polysegment(), Gray.(img))
 end

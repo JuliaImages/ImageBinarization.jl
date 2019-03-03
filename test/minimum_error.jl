@@ -1,8 +1,8 @@
-@testset "minimum" begin
+@testset "minimum_error" begin
     original_image = testimage("lena")
     for T in (Gray{N0f8}, Gray{N0f16}, Gray{Float32}, Gray{Float64})
         img = T.(original_image)
-        img₀₁ = binarize(MinimumIntermodes(), img)
+        img₀₁ = binarize(MinimumError(), img)
 
         # Check original image is unchanged.
         @test img == T.(testimage("lena"))
