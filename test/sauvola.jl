@@ -10,7 +10,7 @@
             target_row₀ = (target_row + i) % 50
             target_col₀ = (target_col + j) % 50
 
-            img_bin = binarize(Sauvola(), img₀, w = 7, k = 0.21)
+            img_bin = binarize(Sauvola(window_size = 7, bias = 0.21), img₀)
             @test eltype(img_bin) == Gray{Bool}
             @test sum(img_bin .== 0) == 1
             @test img_bin[target_row₀, target_col₀] == 0

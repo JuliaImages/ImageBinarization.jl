@@ -22,4 +22,8 @@
         @test img₀₁[minpos] == 0
     end
 
+    binarize(AdaptiveThreshold(percentage = 10), original_image)
+    binarize(AdaptiveThreshold(percentage = 10, window_size = 32), original_image)
+    binarize(AdaptiveThreshold(percentage = 10, window_size = recommend_size(original_image)), original_image)
+
 end

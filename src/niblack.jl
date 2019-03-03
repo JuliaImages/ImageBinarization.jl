@@ -1,6 +1,6 @@
 """
 ```
-img_bin = binarize(Niblack(), img; w = 7, k = 0.2)
+binarize(Niblack(; window_size = 7, bias = 0.2), img)
 ```
 
 Applies Niblack adaptive thresholding [1] under the assumption that the input
@@ -8,8 +8,7 @@ image is textual.
 
 # Output
 
-Returns an AbstractArray{T,2} where T is the element type of the input image,
-representing a binarized copy of the input image.
+Returns the binarized image as an `Array{Gray{Bool},2}`.
 
 # Details
 
@@ -35,37 +34,42 @@ implements an attempt to address this issue [2].
 
 ## `img`
 
-An `AbstractGray` image, which is binarized according to a per-pixel adaptive
-threshold into background (`Gray(0)`) and foreground (`Gray(1)`) pixel values.
+An image which is binarized according to a per-pixel adaptive
+threshold into background (0) and foreground (1) pixel values.
 
-## `w`
+## `window_size` (denoted by ``w`` in the publication)
 
 The threshold for each pixel is a function of the distribution of the intensities
 of all neighboring pixels in a square window around it. The side length of this
-window is `2*w + 1`, with the target pixel in the center position.
+window is ``2w + 1``, with the target pixel in the center position.
 
-## `k`
+## `bias`  (denoted by ``k`` in the publication)
 
 A user-defined biasing parameter. This can take negative values.
 
+# Example
+
+Binarize the "cameraman" image in the `TestImages` package.
+
+```julia
+using TestImages, ImageBinarization
+
+img = testimage("cameraman")
+img_binary = binarize(Niblack(window_size = 9, bias = 0.2), img)
+```
 
 # References
 
 1. Wayne Niblack (1986). *An Introduction to Image Processing*. Prentice-Hall, Englewood Cliffs, NJ: 115-16.
 2. J. Sauvola and M. Pietikäinen (2000). "Adaptive document image binarization". *Pattern Recognition* 33 (2): 225-236. [doi:10.1016/S0031-3203(99)00055-2](https://doi.org/10.1016/S0031-3203(99)00055-2)
 """
-function binarize(algorithm::Niblack, img::AbstractArray{T,2}; w::Integer = 7,  k::Real = 0.2) where T <: Colorant
-    binarize(algorithm, Gray.(img), w = w, k = k)
+function binarize(algorithm::Niblack, img::AbstractArray{T,2}) where T <: Colorant
+    binarize(algorithm, Gray.(img))
 end
 
-"""
-```
-img_bin = binarize!(Niblack(), img, w = 7, k = 0.2)
-```
-Same as [`binarize`](@ref binarize(::Niblack, ::AbstractArray{<:AbstractGray,2}; ::Integer, ::Real))
-except that it modifies the image that was passed as an argument.
-"""
-function binarize(algorithm::Niblack, img::AbstractArray{T,2}; w::Integer = 7, k::Real = 0.2) where T <: AbstractGray
+function binarize(algorithm::Niblack, img::AbstractArray{T,2}) where T <: AbstractGray
+    w = algorithm.window_size
+    k = algorithm.bias
     img₀₁ = zeros(Gray{Bool}, axes(img))
     img_raw = channelview(img)
     I = integral_image(img_raw)
@@ -84,3 +88,5 @@ function binarize(algorithm::Niblack, img::AbstractArray{T,2}; w::Integer = 7, k
 
     return img₀₁
 end
+
+Niblack(; window_size::Int = 7, bias::Real = 0.2) = Niblack(window_size, bias)

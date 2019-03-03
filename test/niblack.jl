@@ -10,7 +10,7 @@
             target_row₀ = (target_row + i) % 50
             target_col₀ = (target_col + j) % 50
 
-            img_bin = binarize(Niblack(), img₀, w = 25, k = -6)
+            img_bin = binarize(Niblack(window_size = 25, bias = -6), img₀)
             @test eltype(img_bin) == Gray{Bool}
             @test sum(img_bin .== 0) == 1
             @test img_bin[target_row₀, target_col₀] == 0
