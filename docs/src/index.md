@@ -36,6 +36,11 @@ binarize(::MinimumError,  ::AbstractArray{<: Colorant,2})
 binarize(::MinimumIntermodes,  ::AbstractArray{<: Colorant,2})
 ```
 
+## Moments
+```@docs
+binarize(::Moments,  ::AbstractArray{<: Colorant,2})
+```
+
 ## Niblack
 ```@docs
 binarize(::Niblack,  ::AbstractArray{<: Colorant,2})

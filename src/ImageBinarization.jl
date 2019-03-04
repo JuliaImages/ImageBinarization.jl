@@ -9,13 +9,12 @@ using Polynomials
 using Statistics
 using ImageCore
 
-#import Images
-
 abstract type BinarizationAlgorithm end
 struct Otsu <: BinarizationAlgorithm end
 struct Polysegment <: BinarizationAlgorithm end
 struct UnimodalRosin <: BinarizationAlgorithm end
 struct MinimumIntermodes <: BinarizationAlgorithm end
+struct Moments <: BinarizationAlgorithm end
 struct Intermodes <: BinarizationAlgorithm end
 struct MinimumError <: BinarizationAlgorithm end
 struct Balanced <: BinarizationAlgorithm end
@@ -23,8 +22,8 @@ struct Yen <: BinarizationAlgorithm end
 struct Entropy <: BinarizationAlgorithm end
 
 struct AdaptiveThreshold <: BinarizationAlgorithm
-	window_size::Int
-	percentage::Int
+    window_size::Int
+    percentage::Int
 end
 
 struct Sauvola <: BinarizationAlgorithm
@@ -44,6 +43,7 @@ include("otsu.jl")
 include("polysegment.jl")
 include("unimodal.jl")
 include("minimum.jl")
+include("moments.jl")
 include("intermodes.jl")
 include("adaptive_threshold.jl")
 include("minimum_error.jl")
@@ -54,7 +54,7 @@ include("niblack.jl")
 
 
 export
-	# main functions
+    # main functions
     binarize,
     recommend_size,
     AdaptiveThreshold,
@@ -63,6 +63,7 @@ export
     Yen,
     Polysegment,
     MinimumIntermodes,
+    Moments,
     Intermodes,
     MinimumError,
     UnimodalRosin,
