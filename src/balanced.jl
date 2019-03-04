@@ -74,11 +74,11 @@ img_binary = binarize(Balanced(), img)
 1. “BI-LEVEL IMAGE THRESHOLDING - A Fast Method”, Proceedings of the First International Conference on Bio-inspired Systems and Signal Processing, 2008. Available: [10.5220/0001064300700076](https://doi.org/10.5220/0001064300700076)
 """
 function binarize(algorithm::Balanced,  img::AbstractArray{T,2}) where T <: Colorant
-  img₀₁ = zeros(Gray{Bool}, axes(img))
-  edges, counts = build_histogram(img,  256)
-  t = find_threshold(HistogramThresholding.Balanced(), counts[1:end], edges)
-  for i in CartesianIndices(img)
-    img₀₁[i] = img[i] < t ? 0 : 1
-  end
-  img₀₁
+    img₀₁ = zeros(Gray{Bool}, axes(img))
+    edges, counts = build_histogram(img,  256)
+    t = find_threshold(HistogramThresholding.Balanced(), counts[1:end], edges)
+    for i in CartesianIndices(img)
+      img₀₁[i] = img[i] < t ? 0 : 1
+    end
+    img₀₁
 end

@@ -78,11 +78,11 @@ img_binary = binarize(Entropy(), img)
 1. J. N. Kapur, P. K. Sahoo, and A. K. C. Wong, “A new method for gray-level picture thresholding using the entropy of the histogram,” *Computer Vision, Graphics, and Image Processing*, vol. 29, no. 1, p. 140, Jan. 1985.[doi:10.1016/s0734-189x(85)90156-2](https://doi.org/10.1016/s0734-189x%2885%2990156-2)
 """
 function binarize(algorithm::Entropy,  img::AbstractArray{T,2}) where T <: Colorant
-  img₀₁ = zeros(Gray{Bool}, axes(img))
-  edges, counts = build_histogram(img,  256)
-  t = find_threshold(HistogramThresholding.Entropy(), counts[1:end], edges)
-  for i in CartesianIndices(img)
-    img₀₁[i] = img[i] < t ? 0 : 1
-  end
-  img₀₁
+    img₀₁ = zeros(Gray{Bool}, axes(img))
+    edges, counts = build_histogram(img,  256)
+    t = find_threshold(HistogramThresholding.Entropy(), counts[1:end], edges)
+    for i in CartesianIndices(img)
+      img₀₁[i] = img[i] < t ? 0 : 1
+    end
+    img₀₁
 end

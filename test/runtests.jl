@@ -8,6 +8,7 @@ using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers, Statist
     include("minimum.jl")
     include("intermodes.jl")
     include("minimum_error.jl")
+    include("moments.jl")
     include("yen.jl")
     include("balanced.jl")
     include("otsu.jl")
