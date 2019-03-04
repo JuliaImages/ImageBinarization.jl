@@ -5,6 +5,5 @@ FixedPointNumbers
 HistogramThresholding
 ImageContrastAdjustment
 ImageCore
-LinearAlgebra
 Polynomials
 Statistics
