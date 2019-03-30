@@ -1,14 +1,7 @@
 @doc raw"""
-```
-binarize(Otsu(), img)
-```
+    Otsu()
 
-Under the assumption that the image histogram is bimodal the binarization
-threshold is set so that the resultant between-class variance is maximal.
-
-# Output
-
-Returns the binarized image as an `Array{Gray{Bool},2}`.
+Constructs an instance of `Otsu` image binarization algorithm.
 
 # Details
 
@@ -52,30 +45,24 @@ decided by minimizing the within-category variances criterion ``\sigma_w^2(T)``.
 Furthermore, that threshold is also the same as the threshold calculated by
 maximizing the ratio of between-category variance to within-category variance.
 
-# Arguments
-
-The function argument is described in more detail below.
-
-##  `img`
-
-An `AbstractArray` representing an image. The image is automatically converted
-to `Gray` in order to construct the requisite graylevel histogram.
-
-
-# Example
-
-Binarize the "cameraman" image in the `TestImages` package.
-
-```julia
-using TestImages, ImageBinarization
-
-img = testimage("cameraman")
-img_binary = binarize(Otsu(), img)
-```
-
 # Reference
 
 1. Nobuyuki Otsu (1979). “A threshold selection method from gray-level histograms”. *IEEE Trans. Sys., Man., Cyber.* 9 (1): 62–66. [doi:10.1109/TSMC.1979.4310076](http://dx.doi.org/doi:10.1109/TSMC.1979.4310076)
+
+See also: [`binarize`](@ref ImageBinarization.binarize), [`BinarizationAlgorithm`](@ref ImageBinarization.BinarizationAlgorithm)
+"""
+struct Otsu <: BinarizationAlgorithm end
+
+
+"""
+    binarize(algorithm::Otsu,  img::AbstractArray{T,2}) where T <: Colorant
+
+Binarizes the image using `Otsu` histogram thresholding method.
+
+Under the assumption that the image histogram is bimodal the binarization
+threshold is set so that the resultant between-class variance is maximal.
+
+Check [`Otsu`](@ref ImageBinarization.Otsu) for more details
 """
 function binarize(algorithm::Otsu,  img::AbstractArray{T,2}) where T <: Colorant
   img₀₁ = zeros(Gray{Bool}, axes(img))

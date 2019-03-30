@@ -1,15 +1,10 @@
-
-
 """
-```
-binarize(AdaptiveThreshold(; percentage = 15, window_size = 32), img)
-```
-Uses a binarization threshold that varies across the image according
-to background illumination.
+    AdaptiveThreshold(; percentage = 15, window_size = 32)
 
-# Output
+Constructs an instance of `AdaptiveThreshold` image binarization algorithm.
 
-Returns the binarized image as an `Array{Gray{Bool},2}`.
+Uses a binarization threshold that varies across the image according to
+background illumination.
 
 # Details
 
@@ -40,58 +35,66 @@ the width and height. You can use the convenience function
 `recommend_size(::AbstractArray{T,2})` to obtain this suggested value.
 If left unspecified, a default value of 32 is utilised.
 
-#Example
-
-```julia
-using TestImages
-
-img = testimage("cameraman")
-s = recommend_size(img)
-binarize(AdaptiveThreshold(percentage = 15, window_size = s), img)
-```
-
 # References
 1. Bradley, D. (2007). Adaptive Thresholding using Integral Image. *Journal of Graphic Tools*, 12(2), pp.13-21. [doi:10.1080/2151237x.2007.10129236](https://doi.org/10.1080/2151237x.2007.10129236)
+
+See also: [`binarize`](@ref ImageBinarization.binarize), [`BinarizationAlgorithm`](@ref ImageBinarization.BinarizationAlgorithm)
+"""
+struct AdaptiveThreshold <: BinarizationAlgorithm
+  window_size::Int
+  percentage::Int
+end
+AdaptiveThreshold(; percentage::Int = 15, window_size::Int = 32) = AdaptiveThreshold(percentage, window_size)
+
+
+"""
+    binarize(algorithm::AdaptiveThreshold, img::AbstractArray{T,2}) where T <: Colorant
+
+Binarizes the image using a binarization threshold that varies across the image according
+to background illumination.
+
+Check [`AdaptiveThreshold`](@ref ImageBinarization.AdaptiveThreshold) for more details.
+
+See also: [`recommend_size`](@ref ImageBinarization.recommend_size)
 """
 function binarize(algorithm::AdaptiveThreshold, img::AbstractArray{T,2}) where T <: Colorant
-    binarize(algorithm, Gray.(img))
+  binarize(algorithm, Gray.(img))
 end
 
 function binarize(algorithm::AdaptiveThreshold, img::AbstractArray{T,2}) where T <: Gray
-    s = algorithm.window_size
-    t = algorithm.percentage
-    if s < 0 || t < 0 || t > 100
-        return error("Percentage and window_size must be greater than or equal to 0. Percentage must be less than or equal to 100.")
+  s = algorithm.window_size
+  t = algorithm.percentage
+  if s < 0 || t < 0 || t > 100
+    return error("Percentage and window_size must be greater than or equal to 0. Percentage must be less than or equal to 100.")
+  end
+  img₀₁ = zeros(Gray{Bool}, axes(img))
+  integral_img = integral_image(img)
+  h, w = size(img)
+  for i in CartesianIndices(img)
+    j,k = i.I
+    y1 = max(1,j - div(s,2))
+    y2 = min(h,j + div(s,2))
+    x1 = max(1,k - div(s,2))
+    x2 = min(w,k + div(s,2))
+    total = boxdiff(integral_img, y1:y2, x1:x2)
+    count = (y2 - y1) * (x2 - x1)
+    if img[i] * count <= total * ((100 - t) / 100)
+      img₀₁[i] = 0
+    else
+      img₀₁[i] = 1
     end
-    img₀₁ = zeros(Gray{Bool}, axes(img))
-    integral_img = integral_image(img)
-    h, w = size(img)
-    for i in CartesianIndices(img)
-        j,k = i.I
-        y1 = max(1,j - div(s,2))
-        y2 = min(h,j + div(s,2))
-        x1 = max(1,k - div(s,2))
-        x2 = min(w,k + div(s,2))
-        total = boxdiff(integral_img, y1:y2, x1:x2)
-        count = (y2 - y1) * (x2 - x1)
-        if img[i] * count <= total * ((100 - t) / 100)
-            img₀₁[i] = 0
-        else
-            img₀₁[i] = 1
-        end
-    end
-    img₀₁
+  end
+  img₀₁
 end
 
-AdaptiveThreshold(; percentage::Int = 15, window_size::Int = 32) = AdaptiveThreshold(percentage, window_size)
-
 """
-```
-recommend_size(img)
-```
+    recommend_size(img)
+
 Helper function for `AdaptiveThreshold` algorithm which returns an integer value
 which is closest to 1/8 of the average of the width and height of the image.
+
+See also: [`binarize`](@ref ImageBinarization.binarize), [`AdaptiveThreshold`](@ref ImageBinarization.AdaptiveThreshold)
 """
 function recommend_size(img::AbstractArray{T,2}) where T
-    s = div(div(sum(size(img)),2),8)
+  s = div(div(sum(size(img)),2),8)
 end

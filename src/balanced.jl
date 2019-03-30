@@ -1,12 +1,7 @@
 @doc raw"""
-```
-binarize(Balanced(), img)
-```
-Binarizes the image using the balanced histogram thresholding method.
+    Balanced()
 
-# Output
-
-Returns the binarized image as an `Array{Gray{Bool},2}`.
+Construct an instance of `Balanced` image binarization algorithm
 
 # Details
 In balanced histogram thresholding, one interprets a  bin as a  physical weight
@@ -47,38 +42,28 @@ the original histogram must have a single peak and the algorithm has failed to
 find a suitable threshold. In this case the algorithm will fall back to using
 the `UnimodalRosin` method to select the threshold.
 
-
-# Arguments
-
-The function argument is described in more detail below.
-
-##  `img`
-
-An `AbstractArray` representing an image. The image is automatically converted
-to `Gray` in order to construct the requisite graylevel histogram.
-
-
-# Example
-
-Binarize the "cameraman" image in the `TestImages` package.
-
-```julia
-using TestImages, ImageBinarization
-
-img = testimage("cameraman")
-img_binary = binarize(Balanced(), img)
-```
-
 # Reference
 
-1. “BI-LEVEL IMAGE THRESHOLDING - A Fast Method”, Proceedings of the First International Conference on Bio-inspired Systems and Signal Processing, 2008. Available: [10.5220/0001064300700076](https://doi.org/10.5220/0001064300700076)
+1. “BI-LEVEL IMAGE THRESHOLDING - A Fast Method”, *Proceedings of the First International Conference on Bio-inspired Systems and Signal Processing*, 2008. Available: [10.5220/0001064300700076](https://doi.org/10.5220/0001064300700076)
+
+See also: [`binarize`](@ref ImageBinarization.binarize), [`BinarizationAlgorithm`](@ref ImageBinarization.BinarizationAlgorithm)
+"""
+struct Balanced <: BinarizationAlgorithm end
+
+
+"""
+    binarize(algorithm::Balanced,  img::AbstractArray{T,2}) where T <: Colorant
+
+Binarizes the image using the balanced histogram thresholding method.
+
+Check [`Blanced`](@ref ImageBinarization.Balanced) for more details
 """
 function binarize(algorithm::Balanced,  img::AbstractArray{T,2}) where T <: Colorant
-    img₀₁ = zeros(Gray{Bool}, axes(img))
-    edges, counts = build_histogram(img,  256)
-    t = find_threshold(HistogramThresholding.Balanced(), counts[1:end], edges)
-    for i in CartesianIndices(img)
-      img₀₁[i] = img[i] < t ? 0 : 1
-    end
-    img₀₁
+  img₀₁ = zeros(Gray{Bool}, axes(img))
+  edges, counts = build_histogram(img,  256)
+  t = find_threshold(HistogramThresholding.Balanced(), counts[1:end], edges)
+  for i in CartesianIndices(img)
+    img₀₁[i] = img[i] < t ? 0 : 1
+  end
+  img₀₁
 end

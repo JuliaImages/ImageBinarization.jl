@@ -1,15 +1,7 @@
 @doc raw"""
-```
-binarize(MinimumError(), img)
-```
+    MinimumError()
 
-Under the assumption that the image histogram is a mixture of two Gaussian
-distributions the binarization threshold is chosen such that the expected
-misclassification error rate is minimised.
-
-# Output
-
-Returns the binarized image as an `Array{Gray{Bool},2}`.
+Constructs a instance of `MinimumError` image binarization algorithm.
 
 # Details
 
@@ -43,30 +35,26 @@ and the piecewise-constant probability density function represented by the histo
 The discrete value ``T`` which minimizes the function ``J(T)`` produces
 the sought-after threshold value (i.e. the bin which determines the threshold).
 
-# Arguments
-
-The function argument is described in more detail below.
-
-##  `img`
-
-An `AbstractArray` representing an image. The image is automatically converted
-to `Gray` in order to construct the requisite graylevel histogram.
-
-# Example
-
-Binarize the "cameraman" image in the `TestImages` package.
-
-```julia
-using TestImages, ImageBinarization
-
-img = testimage("cameraman")
-img_binary = binarize(MinimumError(), img)
-```
 
 # References
 
 1. J. Kittler and J. Illingworth, “Minimum error thresholding,” Pattern Recognition, vol. 19, no. 1, pp. 41–47, Jan. 1986. [doi:10.1016/0031-3203(86)90030-0](https://doi.org/10.1016/0031-3203%2886%2990030-0)
 2. Q.-Z. Ye and P.-E. Danielsson, “On minimum error thresholding and its implementations,” Pattern Recognition Letters, vol. 7, no. 4, pp. 201–206, Apr. 1988. [doi:10.1016/0167-8655(88)90103-1](https://doi.org/10.1016/0167-8655%2888%2990103-1)
+
+See also: [`binarize`](@ref ImageBinarization.binarize), [`BinarizationAlgorithm`](@ref ImageBinarization.BinarizationAlgorithm)
+"""
+struct MinimumError <: BinarizationAlgorithm end
+
+"""
+    binarize(algorithm::MinimumError,  img::AbstractArray{T,2}) where T <: Colorant
+
+Binarizes the image using `MinimumError` histogram thresholding method.
+
+Under the assumption that the image histogram is a mixture of two Gaussian
+distributions the binarization threshold is chosen such that the expected
+misclassification error rate is minimised.
+
+Check [`MinimumError`](@ref ImageBinarization.MinimumError) for more details
 """
 function binarize(algorithm::MinimumError,  img::AbstractArray{T,2}) where T <: Colorant
   img₀₁ = zeros(Gray{Bool}, axes(img))

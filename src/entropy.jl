@@ -1,13 +1,10 @@
 """
-```
-binarize(Entropy(), img)
-```
+    Entropy()
+
+Constructs an instance of `Entropy` image binarization algorithm.
+
 An algorithm for finding the binarization threshold value using
 the entropy of the image histogram.
-
-# Output
-
-Returns the binarized image as an `Array{Gray{Bool},2}`.
 
 # Details
 
@@ -54,28 +51,22 @@ the sought-after threshold value (i.e. the bin which determines the threshold).
 
 See Section 4 of [1] for more details on the derivation of the entropy.
 
-# Arguments
-
-The function argument is described in more detail below.
-
-##  `img`
-
-An `AbstractArray` representing an image. The image is automatically converted
-to `Gray` in order to construct the requisite graylevel histogram.
-
-# Example
-
-Binarize the "cameraman" image in the `TestImages` package.
-
-```julia
-using TestImages, ImageBinarization
-
-img = testimage("cameraman")
-img_binary = binarize(Entropy(), img)
-```
-
 # References
+
 1. J. N. Kapur, P. K. Sahoo, and A. K. C. Wong, “A new method for gray-level picture thresholding using the entropy of the histogram,” *Computer Vision, Graphics, and Image Processing*, vol. 29, no. 1, p. 140, Jan. 1985.[doi:10.1016/s0734-189x(85)90156-2](https://doi.org/10.1016/s0734-189x%2885%2990156-2)
+
+See also: [`binarize`](@ref ImageBinarization.binarize), [`BinarizationAlgorithm`](@ref ImageBinarization.BinarizationAlgorithm)
+"""
+struct Entropy <: BinarizationAlgorithm end
+
+
+"""
+    binarize(algorithm::Entropy,  img::AbstractArray{T,2}) where T <: Colorant
+
+Binarizes the image using `Entropy` method by finding the binarization threshold value
+using the entropy of the image histogram.
+
+Check [`Entropy`](@ref ImageBinarization.Entropy) for more details.
 """
 function binarize(algorithm::Entropy,  img::AbstractArray{T,2}) where T <: Colorant
     img₀₁ = zeros(Gray{Bool}, axes(img))

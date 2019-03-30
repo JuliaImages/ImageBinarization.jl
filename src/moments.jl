@@ -1,16 +1,12 @@
 @doc raw"""
-```
-binarize(Moments(), img)
-```
+    Moments()
+
+Constructs an instance of `Moments` image binarization algorithm.
 
 The following rule determines the binarization threshold:  if one assigns all
 observations below the threshold to a value z₀ and all observations above the
 threshold to a value z₁, then the first three moments of the original histogram
 must match the moments of this specially constructed bilevel histogram.
-
-# Output
-
-Returns the binarized image as an `Array{Gray{Bool},2}`.
 
 # Details
 
@@ -49,31 +45,26 @@ represents the moments of ``f``. To find the desired treshold value, one first s
 the four equations to obtain ``q_0`` and ``q_1``, and then chooses the threshold
 ``t`` such that ``q_0 = \sum_{z_i \le t} p_i``.
 
-
-# Arguments
-
-The function argument is described in more detail below.
-
-##  `img`
-
-An `AbstractArray` representing an image. The image is automatically converted
-to `Gray` in order to construct the requisite graylevel histogram.
-
-
-# Example
-
-Binarize the "cameraman" image in the `TestImages` package.
-
-```julia
-using TestImages, ImageBinarization
-
-img = testimage("cameraman")
-img_binary = binarize(Moments(), img)
-```
-
 # Reference
 
-[1] W.-H. Tsai, “Moment-preserving thresolding: A new approach,” Computer Vision, Graphics, and Image Processing, vol. 29, no. 3, pp. 377–393, Mar. 1985. [doi:10.1016/0734-189x(85)90133-1](https://doi.org/10.1016/0734-189x%2885%2990133-1)
+1. W.-H. Tsai, “Moment-preserving thresolding: A new approach,” *Computer Vision, Graphics, and Image Processing*, vol. 29, no. 3, pp. 377–393, Mar. 1985. [doi:10.1016/0734-189x(85)90133-1](https://doi.org/10.1016/0734-189x%2885%2990133-1)
+
+See also: [`binarize`](@ref ImageBinarization.binarize), [`BinarizationAlgorithm`](@ref ImageBinarization.BinarizationAlgorithm)
+"""
+struct Moments <: BinarizationAlgorithm end
+
+
+"""
+    binarize(algorithm::Moments,  img::AbstractArray{T,2}) where T <: Colorant
+
+Binarizes the image using `Moments` histogram thresholding method.
+
+The following rule determines the binarization threshold:  if one assigns all
+observations below the threshold to a value z₀ and all observations above the
+threshold to a value z₁, then the first three moments of the original histogram
+must match the moments of this specially constructed bilevel histogram.
+
+Check [`Moments`](@ref ImageBinarization.Moments) for more details.
 """
 function binarize(algorithm::Moments,  img::AbstractArray{T,2}) where T <: Colorant
   img₀₁ = zeros(Gray{Bool}, axes(img))

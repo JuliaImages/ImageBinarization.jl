@@ -1,10 +1,7 @@
 """
-```
-binarize(Polysegment(), img)
-```
+    Polysegment()
 
-Uses the *polynomial segmentation* technique to group the image pixels
-into two categories (foreground and background).
+Constructs a `Polysegment` image binarization algorithm.
 
 # Details
 
@@ -14,30 +11,23 @@ of two cluster centers (i.e the foreground and background). Pixels are then
 assigned to the foreground or background depending on which cluster center
 is closest.
 
-# Arguments
-
-The function argument is described in more detail below.
-
-##  `img`
-
-An `AbstractArray` representing an image. The image is automatically converted
-to `Gray`.
-
-
-# Example
-
-Binarize the "cameraman" image in the `TestImages` package.
-
-```julia
-using TestImages, ImageBinarization
-
-img = testimage("cameraman")
-img_binary = binarize(Polysegment(), img)
-```
-
 ## Reference
 
 1. R. E. Vidal, "Generalized Principal Component Analysis (GPCA): An Algebraic Geometric Approach to Subspace Clustering and Motion Segmentation." Order No. 3121739, University of California, Berkeley, Ann Arbor, 2003.
+
+See also: [`binarize`](@ref ImageBinarization.binarize), [`BinarizationAlgorithm`](@ref ImageBinarization.BinarizationAlgorithm)
+"""
+struct Polysegment <: BinarizationAlgorithm end
+
+
+"""
+    binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: Colorant
+
+Uses the *polynomial segmentation* technique to group the image pixels
+into two categories (foreground and background).
+
+
+Check [`Polysegment`](@ref ImageBinarization.Polysegment) for more details
 """
 function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: Colorant
   binarize(Polysegment(), Gray.(img))

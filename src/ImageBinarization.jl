@@ -10,31 +10,6 @@ using Statistics
 using ImageCore
 
 abstract type BinarizationAlgorithm end
-struct Otsu <: BinarizationAlgorithm end
-struct Polysegment <: BinarizationAlgorithm end
-struct UnimodalRosin <: BinarizationAlgorithm end
-struct MinimumIntermodes <: BinarizationAlgorithm end
-struct Moments <: BinarizationAlgorithm end
-struct Intermodes <: BinarizationAlgorithm end
-struct MinimumError <: BinarizationAlgorithm end
-struct Balanced <: BinarizationAlgorithm end
-struct Yen <: BinarizationAlgorithm end
-struct Entropy <: BinarizationAlgorithm end
-
-struct AdaptiveThreshold <: BinarizationAlgorithm
-    window_size::Int
-    percentage::Int
-end
-
-struct Sauvola <: BinarizationAlgorithm
-    window_size::Int
-    bias::Float32
-end
-
-struct Niblack <: BinarizationAlgorithm
-    window_size::Int
-    bias::Float32
-end
 
 include("integral_image.jl")
 include("util.jl")
@@ -52,11 +27,11 @@ include("entropy.jl")
 include("sauvola.jl")
 include("niblack.jl")
 
-
 export
     # main functions
     binarize,
-    recommend_size,
+    BinarizationAlgorithm,
+    recommend_size, # AdaptiveThreshold
     AdaptiveThreshold,
     Otsu,
     Balanced,
@@ -70,4 +45,49 @@ export
     Entropy,
     Sauvola,
     Niblack
+
+"""
+`BinarizationAlgorithm` is an abstract type, you can't instantiate it.
+
+A list of implemented alogrithms are:
+
+* [`AdaptiveThreshold(; percentage = 15, window_size = 32)`](@ref ImageBinarization.AdaptiveThreshold)
+* [`Balanced()`](@ref ImageBinarization.Balanced)
+* [`Entropy()`](@ref ImageBinarization.Entropy)
+* [`Intermodes()`](@ref ImageBinarization.Intermodes)
+* [`MinimumError()`](@ref ImageBinarization.MinimumError)
+* [`MinimumIntermodes()`](@ref ImageBinarization.MinimumIntermodes)
+* [`Moments()`](@ref ImageBinarization.Moments)
+* [`Niblack(; window_size = 7, bias = 0.2)`](@ref ImageBinarization.Niblack)
+* [`Otsu()`](@ref ImageBinarization.Otsu)
+* [`Polysegment()`](@ref ImageBinarization.Polysegment)
+* [`Sauvola(; window_size = 7, bias = 0.2)`](@ref ImageBinarization.Sauvola)
+* [`UnimodalRosin()`](@ref ImageBinarization.UnimodalRosin)
+* [`Yen()`](@ref ImageBinarization.Yen)
+"""
+BinarizationAlgorithm
+
+"""
+    binarize(algorithm::BinarizationAlgorithm,  img::AbstractArray{T,2}) where T <: Colorant
+
+Returns the binarized image as an `Array{Gray{Bool},2}`
+
+# Example
+Binarizes the "cameraman" image in the `TestImages` package using `Otsu` method. All other algorithms are used in a similar way.
+
+```julia
+using TestImages, ImageBinarization
+
+img = testimage("cameraman")
+binarize_method = Otsu()
+img_binary = binarize(binarize_method, img)
+```
+
+!!! warning
+    * color image input `img` is automatically converted to `Gray` if a graylevel histogram is needed.
+
+See also: [`BinarizationAlgorithm`](@ref ImageBinarization.BinarizationAlgorithm)
+"""
+binarize
+
 end # module

@@ -1,14 +1,7 @@
 """
-```
-binarize(Sauvola(; window_size = 7, bias = 0.2), img)
-```
+    Sauvola(; window_size = 7, bias = 0.2)
 
-Applies Sauvola--Pietikäinen adaptive image binarization [1] under the
-assumption that the input image is textual.
-
-# Output
-
-Returns the binarized image as an `Array{Gray{Bool},2}`.
+Constructs an instance of Sauvola--Pietikäinen adaptive image binarization algorithm.
 
 # Details
 
@@ -45,11 +38,6 @@ source image, runtime is significantly improved.
 
 # Arguments
 
-## `img`
-
-An image which is binarized according to a per-pixel adaptive
-threshold into background (0) and foreground (1) pixel values.
-
 ## `window_size` (denoted by ``w`` in the publication)
 
 The threshold for each pixel is a function of the distribution of the intensities
@@ -61,48 +49,57 @@ window is ``2w + 1``, with the target pixel in the center position.
 A user-defined biasing parameter. This can take negative values, though values
 in the range [0.2, 0.5] are typical.
 
-# Example
-
-Binarize the "cameraman" image in the `TestImages` package.
-
-```julia
-using TestImages, ImageBinarization
-
-img = testimage("cameraman")
-img_binary = binarize(Sauvola(window_size = 9, bias = 0.2), img)
-```
-
 # References
 
 1. J. Sauvola and M. Pietikäinen (2000). "Adaptive document image binarization". *Pattern Recognition* 33 (2): 225-236. [doi:10.1016/S0031-3203(99)00055-2](https://doi.org/10.1016/S0031-3203(99)00055-2)
 2. Wayne Niblack (1986). *An Introduction to Image Processing*. Prentice-Hall, Englewood Cliffs, NJ: 115-16.
 3. Faisal Shafait, Daniel Keysers and Thomas M. Breuel (2008). "Efficient implementation of local adaptive thresholding techniques using integral images". Proc. SPIE 6815, Document Recognition and Retrieval XV, 681510 (28 January 2008). [doi:10.1117/12.767755](https://doi.org/10.1117/12.767755)
+
+See also: [`binarize`](@ref ImageBinarization.binarize), [`BinarizationAlgorithm`](@ref ImageBinarization.BinarizationAlgorithm)
+"""
+struct Sauvola <: BinarizationAlgorithm
+  window_size::Int
+  bias::Float32
+end
+Sauvola(; window_size::Int = 7, bias::Real = 0.2) = Sauvola(window_size, bias)
+
+
+"""
+    binarize(algorithm::Sauvola, img::AbstractArray{T,2}) where T <: Colorant
+
+Binarizes the image into background (0) and foreground (1) using Sauvola--Pietikäinen
+adaptive image binarization method [1] under the assumption that the input image is
+textual.
+
+Check [`Sauvola`](@ref ImageBinarization.Sauvola) for more details.
+
+# References
+
+1. J. Sauvola and M. Pietikäinen (2000). "Adaptive document image binarization". *Pattern Recognition* 33 (2): 225-236. [doi:10.1016/S0031-3203(99)00055-2](https://doi.org/10.1016/S0031-3203(99)00055-2)
 """
 function binarize(algorithm::Sauvola, img::AbstractArray{T,2}) where T <: Colorant
-    binarize(algorithm, Gray.(img))
+  binarize(algorithm, Gray.(img))
 end
 
 function binarize(algorithm::Sauvola, img::AbstractArray{T,2}) where T <: AbstractGray
-    w = algorithm.window_size
-    k = algorithm.bias
-    img₀₁ = zeros(Gray{Bool}, axes(img))
-    img_raw = channelview(img)
-    I = integral_image(img_raw)
-    I² = integral_image(img_raw.^2)
-    R = 0.5
+  w = algorithm.window_size
+  k = algorithm.bias
+  img₀₁ = zeros(Gray{Bool}, axes(img))
+  img_raw = channelview(img)
+  I = integral_image(img_raw)
+  I² = integral_image(img_raw.^2)
+  R = 0.5
 
-    function threshold(pixel::CartesianIndex{2})
-        row₀, col₀, row₁, col₁ = get_window_bounds(img, pixel, w)
-        m = μ_in_window(I, row₀, col₀, row₁, col₁)
-        s = σ_in_window(I², m, row₀, col₀, row₁, col₁)
-        return m * (1 + (k * ((s / R) - 1)))
-    end
+  function threshold(pixel::CartesianIndex{2})
+    row₀, col₀, row₁, col₁ = get_window_bounds(img, pixel, w)
+    m = μ_in_window(I, row₀, col₀, row₁, col₁)
+    s = σ_in_window(I², m, row₀, col₀, row₁, col₁)
+    return m * (1 + (k * ((s / R) - 1)))
+  end
 
-    for pixel in CartesianIndices(img)
-        img₀₁[pixel] = img[pixel] <= threshold(pixel) ? 0 : 1
-    end
+  for pixel in CartesianIndices(img)
+    img₀₁[pixel] = img[pixel] <= threshold(pixel) ? 0 : 1
+  end
 
-    return img₀₁
+  return img₀₁
 end
-
-Sauvola(; window_size::Int = 7, bias::Real = 0.2) = Sauvola(window_size, bias)
