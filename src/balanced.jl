@@ -56,7 +56,7 @@ struct Balanced <: BinarizationAlgorithm end
 
 Binarizes the image using the balanced histogram thresholding method.
 
-Check [`Blanced`](@ref ImageBinarization.Balanced) for more details
+Check [`Balanced`](@ref ImageBinarization.Balanced) for more details
 """
 function binarize(algorithm::Balanced,  img::AbstractArray{T,2}) where T <: Colorant
   img₀₁ = zeros(Gray{Bool}, axes(img))
