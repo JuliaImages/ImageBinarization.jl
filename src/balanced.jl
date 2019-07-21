@@ -1,3 +1,6 @@
+struct Balanced <: AbstractImageBinarizationAlgorithm end
+
+
 @doc raw"""
 ```
 binarize(Balanced(), img)

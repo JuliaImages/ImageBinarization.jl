@@ -1,3 +1,5 @@
+struct Polysegment <: AbstractImageBinarizationAlgorithm end
+
 """
 ```
 binarize(Polysegment(), img)

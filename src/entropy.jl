@@ -1,3 +1,5 @@
+struct Entropy <: AbstractImageBinarizationAlgorithm end
+
 """
 ```
 binarize(Entropy(), img)

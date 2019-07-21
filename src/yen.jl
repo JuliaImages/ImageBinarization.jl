@@ -1,3 +1,5 @@
+struct Yen <: AbstractImageBinarizationAlgorithm end
+
 @doc raw"""
 ```
 binarize(Yen(), img)

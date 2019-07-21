@@ -9,65 +9,48 @@ using Polynomials
 using Statistics
 using ImageCore
 
-abstract type BinarizationAlgorithm end
-struct Otsu <: BinarizationAlgorithm end
-struct Polysegment <: BinarizationAlgorithm end
-struct UnimodalRosin <: BinarizationAlgorithm end
-struct MinimumIntermodes <: BinarizationAlgorithm end
-struct Moments <: BinarizationAlgorithm end
-struct Intermodes <: BinarizationAlgorithm end
-struct MinimumError <: BinarizationAlgorithm end
-struct Balanced <: BinarizationAlgorithm end
-struct Yen <: BinarizationAlgorithm end
-struct Entropy <: BinarizationAlgorithm end
-
-struct AdaptiveThreshold <: BinarizationAlgorithm
-    window_size::Int
-    percentage::Int
-end
-
-struct Sauvola <: BinarizationAlgorithm
-    window_size::Int
-    bias::Float32
-end
-
-struct Niblack <: BinarizationAlgorithm
-    window_size::Int
-    bias::Float32
-end
+# TODO: port BinarizationAPI to ImagesAPI
+include("BinarizationAPI/BinarizationAPI.jl")
+import ..BinarizationAPI: AbstractImageBinarizationAlgorithm,
+                          binarize, binarize!
 
 include("integral_image.jl")
 include("util.jl")
-include("balanced.jl")
-include("otsu.jl")
-include("polysegment.jl")
-include("unimodal.jl")
-include("minimum.jl")
-include("moments.jl")
-include("intermodes.jl")
-include("adaptive_threshold.jl")
-include("minimum_error.jl")
-include("yen.jl")
-include("entropy.jl")
-include("sauvola.jl")
-include("niblack.jl")
+
+# Concrete binarization algorithms
+
+include("adaptive_threshold.jl") # AdaptiveThreshold
+include("balanced.jl") # Balanced
+include("entropy.jl") # Entropy
+include("intermodes.jl") # Intermodes
+include("minimum.jl") # MinimumIntermodes
+include("minimum_error.jl") # MinimumError
+include("moments.jl") # Moments
+include("niblack.jl") # Niblack
+include("otsu.jl") # Otsu
+include("polysegment.jl") # Polysegment
+include("sauvola.jl") # Sauvola
+include("unimodal.jl") # UnimodalRosin
+include("yen.jl") # Yen
 
 
 export
-    # main functions
-    binarize,
-    recommend_size,
-    AdaptiveThreshold,
-    Otsu,
+    # generic API
+    binarize, binarize!,
+
+    # Algorithms
+    AdaptiveThreshold, recommend_size,
     Balanced,
-    Yen,
-    Polysegment,
-    MinimumIntermodes,
-    Moments,
+    Entropy,
     Intermodes,
     MinimumError,
-    UnimodalRosin,
-    Entropy,
+    MinimumIntermodes,
+    Moments,
+    Niblack,
+    Otsu,
+    Polysegment,
     Sauvola,
-    Niblack
-end # module
+    UnimodalRosin,
+    Yen
+
+end # module ImageBinarization

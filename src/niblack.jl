@@ -1,3 +1,8 @@
+struct Niblack <: AbstractImageBinarizationAlgorithm
+    window_size::Int
+    bias::Float32
+end
+
 """
 ```
 binarize(Niblack(; window_size = 7, bias = 0.2), img)

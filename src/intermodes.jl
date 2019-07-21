@@ -1,3 +1,6 @@
+struct Intermodes <: AbstractImageBinarizationAlgorithm end
+
+
 """
 ```
 binarize(Intermodes(), img)

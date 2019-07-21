@@ -1,3 +1,5 @@
+struct UnimodalRosin <: AbstractImageBinarizationAlgorithm end
+
 """
 ```
 binarize(UnimodalRosin(), img)

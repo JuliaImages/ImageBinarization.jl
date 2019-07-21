@@ -1,3 +1,6 @@
+struct Moments <: AbstractImageBinarizationAlgorithm end
+
+
 @doc raw"""
 ```
 binarize(Moments(), img)

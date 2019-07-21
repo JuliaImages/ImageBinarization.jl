@@ -1,3 +1,5 @@
+struct Otsu <: AbstractImageBinarizationAlgorithm end
+
 @doc raw"""
 ```
 binarize(Otsu(), img)

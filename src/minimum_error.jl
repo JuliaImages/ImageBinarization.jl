@@ -1,3 +1,5 @@
+struct MinimumError <: AbstractImageBinarizationAlgorithm end
+
 @doc raw"""
 ```
 binarize(MinimumError(), img)

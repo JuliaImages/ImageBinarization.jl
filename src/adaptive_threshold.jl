@@ -1,4 +1,7 @@
-
+struct AdaptiveThreshold <: AbstractImageBinarizationAlgorithm
+    window_size::Int
+    percentage::Int
+end
 
 """
 ```
