@@ -1,55 +1,50 @@
-"""
-```
-binarize(AdaptiveThreshold(; percentage = 15, window_size = 32), img)
-```
-Uses a binarization threshold that varies across the image according
-to background illumination.
+@doc raw"""
+    AdaptiveThreshold <: AbstractImageBinarizationAlgorithm
+    AdaptiveThreshold(; window_size = 32, percentage = 15)
 
-# Output
+    binarize(img, f::AdaptiveThreshold)
+    binarize!([out,] img, f::AdaptiveThreshold)
 
-Returns the binarized image as an `Array{Gray{Bool},2}`.
+Binarize `img` using a threshold that varies according to background
+illumination.
 
-# Details
+If the value of a pixel is `t` percent less than the average of its
+neighbourhood, then the pixel is set to black, otherwise it is set to white.
 
-If the value of a pixel is ``t`` percent less than the  average of an ``s
-\\times s`` window of pixels centered around the pixel, then the pixel is set
-to black, otherwise it is set to white.
+!!! note
 
-A computationally efficient method for computing the average of an ``s \\times s``
-neighbourhood is achieved by using an *integral image*.
-
-This algorithm works particularly well on images that have distinct contrast
-between background and foreground. See [1] for more details.
+    This algorithm works particularly well on images that have distinct
+    contrast between background and foreground. See [1] for more details.
 
 # Options
-Various options for the parameters of this function are described in more detail
-below.
 
-## Choices for `percentage`
-You can specify an integer for the `percentage` (denoted by ``t`` in the
-publication) which must be between 0 and 100. If left unspecified a default
-value of 15 is utilised.
+* `window_size` : the size of pixel's square neighbourhood. See also  [`recommend_size`](@ref) for `window_size` estimation. Default: 32
+* `percentage` : dynamically determines the binarization threshold at each pixel. Larger `percentage` encourages more white pixels in the output. Default: 15
 
-## Choices for `window_size`
-The argument `window_size` (denoted by ``s`` in the publication)  specifies the
-size of pixel's square neighbourhood which must be greater than zero. A
-recommended size is the integer value which is closest to 1/8 of the average of
-the width and height. You can use the convenience function
-`recommend_size(::AbstractArray{T,2})` to obtain this suggested value.
-If left unspecified, a default value of 32 is utilised.
-
-#Example
+# Examples
 
 ```julia
 using TestImages
 
 img = testimage("cameraman")
 s = recommend_size(img)
-binarize(AdaptiveThreshold(percentage = 15, window_size = s), img)
+f = AdaptiveThreshold(window_size = s, percentage = 15)
+
+# usage 1
+out = binarize(img, f)
+
+# usage 2
+out = similar(img)
+binarize!(out, img, f) # out will be changed in place
+
+# usage 3
+binarize!(img, f) # img will be changed in place
 ```
 
 # References
-1. Bradley, D. (2007). Adaptive Thresholding using Integral Image. *Journal of Graphic Tools*, 12(2), pp.13-21. [doi:10.1080/2151237x.2007.10129236](https://doi.org/10.1080/2151237x.2007.10129236)
+
+[1] Bradley, D. (2007). Adaptive Thresholding using Integral Image. *Journal of Graphic Tools*, 12(2), pp.13-21. [doi:10.1080/2151237x.2007.10129236](https://doi.org/10.1080/2151237x.2007.10129236)
+
 """
 struct AdaptiveThreshold <: AbstractImageBinarizationAlgorithm
     window_size::Int
