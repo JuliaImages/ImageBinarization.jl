@@ -1,8 +1,3 @@
-struct AdaptiveThreshold <: AbstractImageBinarizationAlgorithm
-    window_size::Int
-    percentage::Int
-end
-
 """
 ```
 binarize(AdaptiveThreshold(; percentage = 15, window_size = 32), img)
@@ -56,11 +51,13 @@ binarize(AdaptiveThreshold(percentage = 15, window_size = s), img)
 # References
 1. Bradley, D. (2007). Adaptive Thresholding using Integral Image. *Journal of Graphic Tools*, 12(2), pp.13-21. [doi:10.1080/2151237x.2007.10129236](https://doi.org/10.1080/2151237x.2007.10129236)
 """
-function binarize(algorithm::AdaptiveThreshold, img::AbstractArray{T,2}) where T <: Colorant
-    binarize(algorithm, Gray.(img))
+struct AdaptiveThreshold <: AbstractImageBinarizationAlgorithm
+    window_size::Int
+    percentage::Int
 end
+AdaptiveThreshold(; percentage::Int = 15, window_size::Int = 32) = AdaptiveThreshold(percentage, window_size)
 
-function binarize(algorithm::AdaptiveThreshold, img::AbstractArray{T,2}) where T <: Gray
+function (f::AdaptiveThreshold)(out::GenericGrayImage, img::GenericGrayImage)
     s = algorithm.window_size
     t = algorithm.percentage
     if s < 0 || t < 0 || t > 100
@@ -86,7 +83,9 @@ function binarize(algorithm::AdaptiveThreshold, img::AbstractArray{T,2}) where T
     img₀₁
 end
 
-AdaptiveThreshold(; percentage::Int = 15, window_size::Int = 32) = AdaptiveThreshold(percentage, window_size)
+function (f::AdaptiveThreshold)(out, img::AbstractArray{<:Color3})
+    f(out, of_eltype(Gray, img))
+end
 
 """
 ```

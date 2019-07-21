@@ -8,6 +8,8 @@ using HistogramThresholding
 using Polynomials
 using Statistics
 using ImageCore
+using ImageCore: GenericGrayImage
+using MappedArrays
 
 # TODO: port BinarizationAPI to ImagesAPI
 include("BinarizationAPI/BinarizationAPI.jl")
