@@ -1,5 +1,9 @@
 
 @testset "adaptive_threshold" begin
+
+    @test AdaptiveThreshold() == AdaptiveThreshold(15, 32)
+    @test AdaptiveThreshold(15, 32) == AdaptiveThreshold(window_size=15, percentage==32)
+
     original_image = testimage("lena")
     for T in (Gray{N0f8}, Gray{N0f16}, Gray{Float32}, Gray{Float64})
         img = T.(original_image)

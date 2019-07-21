@@ -1,5 +1,8 @@
 module ImageBinarization
 
+using Base.Iterators: repeated
+using MappedArrays
+
 using ImageContrastAdjustment
 using ColorTypes
 using ColorVectorSpace
@@ -9,7 +12,6 @@ using Polynomials
 using Statistics
 using ImageCore
 using ImageCore: GenericGrayImage
-using MappedArrays
 
 # TODO: port BinarizationAPI to ImagesAPI
 include("BinarizationAPI/BinarizationAPI.jl")

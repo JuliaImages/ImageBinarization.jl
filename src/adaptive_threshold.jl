@@ -53,34 +53,38 @@ binarize(AdaptiveThreshold(percentage = 15, window_size = s), img)
 """
 struct AdaptiveThreshold <: AbstractImageBinarizationAlgorithm
     window_size::Int
-    percentage::Int
+    percentage::Float64
+
+    function AdaptiveThreshold(window_size, percentage)
+        s < 0 && raise(ArgumentError("window_size must be Non-negative."))
+        (t < 0 || t > 100) && raise(ArgumentError("percentage must be between [0, 100]"))
+        new(window_size, percentage)
+    end
 end
-AdaptiveThreshold(; percentage::Int = 15, window_size::Int = 32) = AdaptiveThreshold(percentage, window_size)
+AdaptiveThreshold(; window_size::Integer = 32, percentage::AbstractFloat = 15) = AdaptiveThreshold(window_size, percentage)
 
 function (f::AdaptiveThreshold)(out::GenericGrayImage, img::GenericGrayImage)
-    s = algorithm.window_size
-    t = algorithm.percentage
-    if s < 0 || t < 0 || t > 100
-        return error("Percentage and window_size must be greater than or equal to 0. Percentage must be less than or equal to 100.")
-    end
-    img₀₁ = zeros(Gray{Bool}, axes(img))
+    size(out) == size(img) || raise(ArgumentError("out and img should have the same shape, instead they are $(size(out)) and $(size(img))"))
+
+    t = f.percentage
+    rₛ = CartesianIndex(Tuple(repeated(f.window_size ÷ 2, ndims(img))))
+    R = CartesianIndices(img)
+    p_first, p_last = first(R), last(R)
+
     integral_img = integral_image(img)
-    h, w = size(img)
-    for i in CartesianIndices(img)
-        j,k = i.I
-        y1 = max(1,j - div(s,2))
-        y2 = min(h,j + div(s,2))
-        x1 = max(1,k - div(s,2))
-        x2 = min(w,k + div(s,2))
-        total = boxdiff(integral_img, y1:y2, x1:x2)
-        count = (y2 - y1) * (x2 - x1)
-        if img[i] * count <= total * ((100 - t) / 100)
-            img₀₁[i] = 0
+    @simd for p in R
+        p_tl = max(p_first, p - rₛ)
+        p_br = min(p_last, p + rₛ)
+        # can we pre-calculate this before the for-loop?
+        total = boxdiff(integral_img, p_tl, p_br)
+        count = length(p_tl:p_br)
+        if img[p] * count <= total * ((100 - t) / 100)
+            out[p] = 0
         else
-            img₀₁[i] = 1
+            out[p] = 1
         end
     end
-    img₀₁
+    out
 end
 
 function (f::AdaptiveThreshold)(out, img::AbstractArray{<:Color3})
@@ -88,12 +92,9 @@ function (f::AdaptiveThreshold)(out, img::AbstractArray{<:Color3})
 end
 
 """
-```
-recommend_size(img)
-```
-Helper function for `AdaptiveThreshold` algorithm which returns an integer value
-which is closest to 1/8 of the average of the width and height of the image.
+    recommend_size(img)::Int
+
+Estimate the appropriate `window_size` for [`AdaptiveThreshold`](@ref) algorithm using `round(mean(size(img))/8)`
+
 """
-function recommend_size(img::AbstractArray{T,2}) where T
-    s = div(div(sum(size(img)),2),8)
-end
+recommend_size(img::AbstractArray) = round(mean(size(img))/8)
