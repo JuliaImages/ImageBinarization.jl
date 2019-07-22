@@ -72,7 +72,7 @@ function (f::AdaptiveThreshold)(out::GenericGrayImage, img::GenericGrayImage)
         p_br = min(p_last, p + rₛ)
         # can we pre-calculate this before the for-loop?
         total = boxdiff(integral_img, p_tl, p_br)
-        count = length(p_tl:p_br)
+        count = length(_colon(p_tl, p_br))
         if img[p] * count <= total * ((100 - t) / 100)
             out[p] = 0
         else

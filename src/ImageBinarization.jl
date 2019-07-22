@@ -20,6 +20,7 @@ import .BinarizationAPI: AbstractImageBinarizationAlgorithm,
 
 include("integral_image.jl")
 include("util.jl")
+include("compat.jl")
 
 # Concrete binarization algorithms
 
