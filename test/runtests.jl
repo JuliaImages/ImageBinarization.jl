@@ -1,10 +1,14 @@
 using ImageBinarization
-using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers, Statistics
+using Test, TestImages
+using Statistics
+using ImageCore, ImageTransformations
+using ReferenceTests
+
+include("testutils.jl")
 
 @testset "ImageBinarization.jl" begin
-    # include("util.jl")
-    #
-    # include("adaptive_threshold.jl")
+    include("util.jl")
+
     # include("balanced.jl")
     # include("entropy.jl")
     # include("intermodes.jl")
@@ -19,3 +23,5 @@ using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers, Statist
     # include("yen.jl")
 
 end
+
+nothing
