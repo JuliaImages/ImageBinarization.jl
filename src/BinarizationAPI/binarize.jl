@@ -34,7 +34,7 @@ end
 function binarize(::Type{T},
                   img,
                   f::AbstractImageBinarizationAlgorithm,
-                  args...; kwargs...)
+                  args...; kwargs...) where T
     out = Array{T}(undef, size(img))
     binarize!(out, img, f, args...; kwargs...)
     return out
