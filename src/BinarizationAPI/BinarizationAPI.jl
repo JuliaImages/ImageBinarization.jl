@@ -2,6 +2,8 @@
 # proposed in https://github.com/JuliaImages/ImagesAPI.jl/pull/3
 module BinarizationAPI
 
+using ColorTypes
+
 """
     AbstractImageAlgorithm
 

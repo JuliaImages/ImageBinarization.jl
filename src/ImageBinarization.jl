@@ -11,8 +11,8 @@ using ImageCore
 
 # TODO: port BinarizationAPI to ImagesAPI
 include("BinarizationAPI/BinarizationAPI.jl")
-import ..BinarizationAPI: AbstractImageBinarizationAlgorithm,
-                          binarize, binarize!
+import .BinarizationAPI: AbstractImageBinarizationAlgorithm,
+                         binarize, binarize!
 
 include("integral_image.jl")
 include("util.jl")

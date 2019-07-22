@@ -43,7 +43,7 @@ end
 binarize(img,
          f::AbstractImageBinarizationAlgorithm,
          args...; kwargs...) =
-    binarize(eltype(img), img, f, args...; kwargs...)
+    binarize(Gray{eltype(eltype(img))}, img, f, args...; kwargs...)
 
 ### Docstrings
 
