@@ -51,15 +51,15 @@ struct AdaptiveThreshold <: AbstractImageBinarizationAlgorithm
     percentage::Float64
 
     function AdaptiveThreshold(window_size, percentage)
-        s < 0 && raise(ArgumentError("window_size must be Non-negative."))
-        (t < 0 || t > 100) && raise(ArgumentError("percentage must be between [0, 100]"))
+        window_size < 0 && throw(ArgumentError("window_size should be non-negative."))
+        (percentage < 0 || percentage > 100) && throw(ArgumentError("percentage should be ∈ [0, 100]."))
         new(window_size, percentage)
     end
 end
-AdaptiveThreshold(; window_size::Integer = 32, percentage::AbstractFloat = 15) = AdaptiveThreshold(window_size, percentage)
+AdaptiveThreshold(; window_size::Integer = 32, percentage::Real = 15) = AdaptiveThreshold(window_size, percentage)
 
 function (f::AdaptiveThreshold)(out::GenericGrayImage, img::GenericGrayImage)
-    size(out) == size(img) || raise(ArgumentError("out and img should have the same shape, instead they are $(size(out)) and $(size(img))"))
+    size(out) == size(img) || throw(ArgumentError("out and img should have the same shape, instead they are $(size(out)) and $(size(img))"))
 
     t = f.percentage
     rₛ = CartesianIndex(Tuple(repeated(f.window_size ÷ 2, ndims(img))))
@@ -82,9 +82,9 @@ function (f::AdaptiveThreshold)(out::GenericGrayImage, img::GenericGrayImage)
     out
 end
 
-function (f::AdaptiveThreshold)(out, img::AbstractArray{<:Color3})
+# first do Color3 to Gray conversion
+(f::AdaptiveThreshold)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
     f(out, of_eltype(Gray, img))
-end
 
 """
     recommend_size(img)::Int
