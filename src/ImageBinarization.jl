@@ -34,6 +34,8 @@ include("unimodal.jl") # UnimodalRosin
 include("yen.jl") # Yen
 
 
+include("deprecations.jl")
+
 export
     # generic API
     binarize, binarize!,
