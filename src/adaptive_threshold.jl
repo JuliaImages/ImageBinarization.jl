@@ -1,25 +1,56 @@
 @doc raw"""
     AdaptiveThreshold <: AbstractImageBinarizationAlgorithm
-    AdaptiveThreshold(; window_size = 32, percentage = 15)
+    AdaptiveThreshold(; percentage = 15)
 
-    binarize(img, f::AdaptiveThreshold)
-    binarize!([out,] img, f::AdaptiveThreshold)
+    binarize([T,] img, f::AdaptiveThreshold; [window_size])
+    binarize!([out,] img, f::AdaptiveThreshold; [window_size])
 
 Binarize `img` using a threshold that varies according to background
 illumination.
 
-If the value of a pixel is `t` percent less than the average of its
-neighbourhood, then the pixel is set to black, otherwise it is set to white.
+!!! info
 
-!!! note
+    If `img` is `Color3`(e.g., `RGB`) image, it is converted to `Gray` first.
 
-    This algorithm works particularly well on images that have distinct
-    contrast between background and foreground. See [1] for more details.
+# Output
+
+Return the binarized image as an `Array{Gray{T}}` of size `size(img)`. If
+`T` is not specified, it is inferred from `out` and `img`.
+
+# Details
+
+If the value of a pixel is `t` percent less than the average of an ``s
+\times s`` window of pixels centered around the pixel, then the pixel is set
+to black, otherwise it is set to white.
+
+A computationally efficient method for computing the average of an ``s
+\times s`` neighbourhood is achieved by using an *integral image*
+[`integral_image`](@ref).
+
+This algorithm works particularly well on images that have distinct contrast
+between background and foreground. See [1] for more details.
 
 # Options
 
-* `window_size` : the size of pixel's square neighbourhood. See also  [`recommend_size`](@ref) for `window_size` estimation. Default: 32
-* `percentage` : dynamically determines the binarization threshold at each pixel. Larger `percentage` encourages more white pixels in the output. Default: 15
+Various options for the parameters of `AdaptiveThreshold`, `binarize` and
+`binarize!` are described in more detail below.
+
+## Choices for `percentage`
+
+You can specify an integer for the `percentage` (denoted by `t` in [1])
+which must be between 0 and 100. Default: 15
+
+## Choices for `window_size`
+
+The argument `window_size` (denoted by `s` in [1]) specifies the size of
+pixel's square neighbourhood which must be greater than zero.
+
+The default value is the integer which is closest to 1/8 of the average of
+the width and height of `img`.
+
+!!! info
+
+    `window_size` is a keyword argument in [`binarize`](@ref) and [`binarize!`](@ref)
 
 # Examples
 
@@ -27,19 +58,13 @@ neighbourhood, then the pixel is set to black, otherwise it is set to white.
 using TestImages
 
 img = testimage("cameraman")
-s = recommend_size(img)
-f = AdaptiveThreshold(window_size = s, percentage = 15)
+f = AdaptiveThreshold()
 
-# usage 1
-out = binarize(img, f)
-
-# usage 2
-out = similar(img)
-binarize!(out, img, f) # out will be changed in place
-
-# usage 3
-binarize!(img, f) # img will be changed in place
+img₀₁_1 = binarize(img, f)
+img₀₁_2 = binarize(img, f, window_size=16)
 ```
+
+See also [`binarize!`](@ref) for in-place operation.
 
 # References
 
@@ -47,22 +72,35 @@ binarize!(img, f) # img will be changed in place
 
 """
 struct AdaptiveThreshold <: AbstractImageBinarizationAlgorithm
-    window_size::Int
     percentage::Float64
 
-    function AdaptiveThreshold(window_size, percentage)
-        window_size < 0 && throw(ArgumentError("window_size should be non-negative."))
+    function AdaptiveThreshold(percentage)
         (percentage < 0 || percentage > 100) && throw(ArgumentError("percentage should be ∈ [0, 100]."))
-        new(window_size, percentage)
+        new(percentage)
     end
 end
-AdaptiveThreshold(; window_size::Integer = 32, percentage::Real = 15) = AdaptiveThreshold(window_size, percentage)
 
-function (f::AdaptiveThreshold)(out::GenericGrayImage, img::GenericGrayImage)
+function AdaptiveThreshold(; percentage::Real = 15, window_size=nothing)
+    if window_size === nothing
+        return AdaptiveThreshold(percentage)
+    else
+        # deprecate window_size
+        return AdaptiveThreshold(window_size, percentage)
+    end
+end
+
+function (f::AdaptiveThreshold)(out::GenericGrayImage,
+                                img::GenericGrayImage;
+                                window_size::Union{Nothing, Integer}=nothing)
+    if window_size === nothing
+        window_size = default_AdaptiveThreshold_window_size(img)
+    end
+
+    window_size < 0 && throw(ArgumentError("window_size should be non-negative."))
     size(out) == size(img) || throw(ArgumentError("out and img should have the same shape, instead they are $(size(out)) and $(size(img))"))
 
     t = f.percentage
-    rₛ = CartesianIndex(Tuple(repeated(f.window_size ÷ 2, ndims(img))))
+    rₛ = CartesianIndex(Tuple(repeated(window_size ÷ 2, ndims(img))))
     R = CartesianIndices(img)
     p_first, p_last = first(R), last(R)
 
@@ -83,13 +121,12 @@ function (f::AdaptiveThreshold)(out::GenericGrayImage, img::GenericGrayImage)
 end
 
 # first do Color3 to Gray conversion
-(f::AdaptiveThreshold)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
-    f(out, of_eltype(Gray, img))
+(f::AdaptiveThreshold)(out::GenericGrayImage, img::AbstractArray{<:Color3}, args...; kwargs...) =
+    f(out, of_eltype(Gray, img), args...; kwargs...)
 
 """
-    recommend_size(img)::Int
+    default_AdaptiveThreshold_window_size(img)::Int
 
 Estimate the appropriate `window_size` for [`AdaptiveThreshold`](@ref) algorithm using `round(mean(size(img))/8)`
-
 """
-recommend_size(img::AbstractArray) = round(mean(size(img))/8)
+default_AdaptiveThreshold_window_size(img::AbstractArray) = round(Int, mean(size(img)) / 8)
