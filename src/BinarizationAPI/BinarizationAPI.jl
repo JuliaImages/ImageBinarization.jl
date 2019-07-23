@@ -3,6 +3,7 @@
 module BinarizationAPI
 
 using ColorTypes
+const GenericGrayImage = AbstractArray{<:Union{Number, AbstractGray}}
 
 """
     AbstractImageAlgorithm

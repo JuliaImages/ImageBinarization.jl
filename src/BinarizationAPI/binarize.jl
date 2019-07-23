@@ -18,12 +18,14 @@ TODO: Otsu
 """
 abstract type AbstractImageBinarizationAlgorithm <: AbstractImageFilter end
 
-binarize!(out, img,
+binarize!(out::GenericGrayImage,
+          img,
           f::AbstractImageBinarizationAlgorithm,
           args...; kwargs...) =
     f(out, img, args...; kwargs...)
 
-function binarize!(img,
+# in-place binarize! only supports gray image input
+function binarize!(img::GenericGrayImage,
                    f::AbstractImageBinarizationAlgorithm,
                    args...; kwargs...)
     tmp = copy(img)
@@ -40,10 +42,10 @@ function binarize(::Type{T},
     return out
 end
 
-binarize(img,
+binarize(img::AbstractArray{T},
          f::AbstractImageBinarizationAlgorithm,
-         args...; kwargs...) =
-    binarize(Gray{eltype(eltype(img))}, img, f, args...; kwargs...)
+         args...; kwargs...) where T <:Union{Number, Colorant} =
+    binarize(Gray{eltype(T)}, img, f, args...; kwargs...)
 
 ### Docstrings
 
