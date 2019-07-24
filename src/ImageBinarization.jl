@@ -1,5 +1,8 @@
 module ImageBinarization
 
+using Base.Iterators: repeated
+using MappedArrays
+
 using ImageContrastAdjustment
 using ColorTypes
 using ColorVectorSpace
@@ -8,6 +11,7 @@ using HistogramThresholding
 using Polynomials
 using Statistics
 using ImageCore
+using ImageCore: GenericGrayImage
 
 # TODO: port BinarizationAPI to ImagesAPI
 include("BinarizationAPI/BinarizationAPI.jl")
@@ -16,6 +20,7 @@ import .BinarizationAPI: AbstractImageBinarizationAlgorithm,
 
 include("integral_image.jl")
 include("util.jl")
+include("compat.jl")
 
 # Concrete binarization algorithms
 
