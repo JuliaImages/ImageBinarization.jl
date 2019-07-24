@@ -8,10 +8,6 @@
 Binarize `img` using a threshold that varies according to background
 illumination.
 
-!!! info
-
-    If `img` is `Color3`(e.g., `RGB`) image, it is converted to `Gray` first.
-
 # Output
 
 Return the binarized image as an `Array{Gray{T}}` of size `size(img)`. If
@@ -29,6 +25,15 @@ A computationally efficient method for computing the average of an ``s
 
 This algorithm works particularly well on images that have distinct contrast
 between background and foreground. See [1] for more details.
+
+# Arguments
+
+The function argument is described in more detail below.
+
+##  `img::AbstractArray`
+
+The image that need to be binarized. The image is automatically converted
+to `Gray` in order to construct the requisite graylevel histogram..
 
 # Options
 
