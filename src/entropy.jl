@@ -75,7 +75,7 @@ Binarize the "cameraman" image in the `TestImages` package.
 using TestImages, ImageBinarization
 
 img = testimage("cameraman")
-img_binary = binarize(Entropy(), img)
+img_binary = binarize(img, Entropy())
 ```
 
 # References
