@@ -1,10 +1,9 @@
-struct Moments <: AbstractImageBinarizationAlgorithm end
-
-
 @doc raw"""
-```
-binarize(Moments(), img)
-```
+    Moments <: AbstractImageBinarizationAlgorithm
+    Moments()
+
+    binarize([T,] img, f::Moments)
+    binarize!([out,] img, f::Moments)
 
 The following rule determines the binarization threshold:  if one assigns all
 observations below the threshold to a value z₀ and all observations above the
@@ -13,7 +12,8 @@ must match the moments of this specially constructed bilevel histogram.
 
 # Output
 
-Returns the binarized image as an `Array{Gray{Bool},2}`.
+Return the binarized image as an `Array{Gray{T}}` of size `size(img)`. If
+`T` is not specified, it is inferred from `out` and `img`.
 
 # Details
 
@@ -57,9 +57,9 @@ the four equations to obtain ``q_0`` and ``q_1``, and then chooses the threshold
 
 The function argument is described in more detail below.
 
-##  `img`
+##  `img::AbstractArray`
 
-An `AbstractArray` representing an image. The image is automatically converted
+The image that needs to be binarized. The image is automatically converted
 to `Gray` in order to construct the requisite graylevel histogram.
 
 
@@ -71,19 +71,23 @@ Binarize the "cameraman" image in the `TestImages` package.
 using TestImages, ImageBinarization
 
 img = testimage("cameraman")
-img_binary = binarize(Moments(), img)
+img_binary = binarize(img, Moments())
 ```
 
 # Reference
 
 [1] W.-H. Tsai, “Moment-preserving thresolding: A new approach,” Computer Vision, Graphics, and Image Processing, vol. 29, no. 3, pp. 377–393, Mar. 1985. [doi:10.1016/0734-189x(85)90133-1](https://doi.org/10.1016/0734-189x%2885%2990133-1)
 """
-function binarize(algorithm::Moments,  img::AbstractArray{T,2}) where T <: Colorant
-  img₀₁ = zeros(Gray{Bool}, axes(img))
-  edges, counts = build_histogram(img,  256)
-  t = find_threshold(HistogramThresholding.Moments(), counts[1:end], edges)
-  for i in CartesianIndices(img)
-    img₀₁[i] = img[i] < t ? 0 : 1
-  end
-  img₀₁
+struct Moments <: AbstractImageBinarizationAlgorithm end
+
+function (f::Moments)(out::GenericGrayImage, img::GenericGrayImage)
+    edges, counts = build_histogram(img,  256)
+    t = find_threshold(HistogramThresholding.Moments(), counts[1:end], edges)
+    for i in CartesianIndices(img)
+        out[i] = img[i] < t ? 0 : 1
+    end
+    out
 end
+
+(f::Moments)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
+    f(out, of_eltype(Gray, img))
