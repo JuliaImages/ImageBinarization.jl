@@ -8,7 +8,7 @@ include("testutils.jl")
 
 @testset "ImageBinarization.jl" begin
     include("util.jl")
-  
+
     include("adaptive_threshold.jl")
     # include("balanced.jl")
     # include("entropy.jl")
@@ -20,7 +20,7 @@ include("testutils.jl")
     # include("otsu.jl")
     # include("polysegment.jl")
     # include("sauvola.jl")
-    # include("unimodal.jl")
+    include("unimodal.jl")
     # include("yen.jl")
 
 end
