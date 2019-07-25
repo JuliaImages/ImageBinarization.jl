@@ -1,18 +1,20 @@
-struct Balanced <: AbstractImageBinarizationAlgorithm end
-
-
 @doc raw"""
-```
-binarize(Balanced(), img)
-```
+    Balanced <: AbstractImageBinarizationAlgorithm
+    Balanced()
+
+    binarize([T,] img, f::Balanced)
+    binarize!([out,] img, f::Balanced)
+
 Binarizes the image using the balanced histogram thresholding method.
 
 # Output
 
-Returns the binarized image as an `Array{Gray{Bool},2}`.
+Return the binarized image as an `Array{Gray{T}}` of size `size(img)`. If
+`T` is not specified, it is inferred from `out` and `img`.
 
 # Details
-In balanced histogram thresholding, one interprets a  bin as a  physical weight
+
+In balanced histogram thresholding, one interprets a bin as a physical weight
 with a mass equal to its occupancy count. The balanced histogram method involves
 iterating the following three steps: (1) choose the midpoint bin index as a
 "pivot",  (2) compute the combined weight to the left and right of the pivot bin
@@ -55,9 +57,9 @@ the `UnimodalRosin` method to select the threshold.
 
 The function argument is described in more detail below.
 
-##  `img`
+##  `img::AbstractArray`
 
-An `AbstractArray` representing an image. The image is automatically converted
+The image that needs to be binarized. The image is automatically converted
 to `Gray` in order to construct the requisite graylevel histogram.
 
 
@@ -76,12 +78,16 @@ img_binary = binarize(Balanced(), img)
 
 1. “BI-LEVEL IMAGE THRESHOLDING - A Fast Method”, Proceedings of the First International Conference on Bio-inspired Systems and Signal Processing, 2008. Available: [10.5220/0001064300700076](https://doi.org/10.5220/0001064300700076)
 """
-function binarize(algorithm::Balanced,  img::AbstractArray{T,2}) where T <: Colorant
-    img₀₁ = zeros(Gray{Bool}, axes(img))
+struct Balanced <: AbstractImageBinarizationAlgorithm end
+
+function (f::Balanced)(out::GenericGrayImage, img::GenericGrayImage)
     edges, counts = build_histogram(img,  256)
     t = find_threshold(HistogramThresholding.Balanced(), counts[1:end], edges)
     for i in CartesianIndices(img)
-      img₀₁[i] = img[i] < t ? 0 : 1
+      out[i] = img[i] < t ? 0 : 1
     end
-    img₀₁
+    out
 end
+
+(f::Balanced)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
+    f(out, of_eltype(Gray, img))
