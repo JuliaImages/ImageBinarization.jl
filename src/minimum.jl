@@ -18,7 +18,7 @@ Return the binarized image as an `Array{Gray{T}}` of size `size(img)`. If
 
 The function argument is described in more detail below.
 
-##  `img`
+##  `img::AbstractArray`
 
 The image that needs to be binarized. The image is automatically converted
 to `Gray` in order to construct the requisite graylevel histogram.
@@ -44,7 +44,7 @@ struct MinimumIntermodes <: AbstractImageBinarizationAlgorithm end
 function (f::MinimumIntermodes)(out::GenericGrayImage, img::GenericGrayImage)
     edges, counts = build_histogram(img,  256)
     t = find_threshold(HistogramThresholding.MinimumIntermodes(), counts[1:end], edges)
-    for i in CartesianIndices(img)
+    @simd for i in CartesianIndices(img)
         out[i] = img[i] < t ? 0 : 1
     end
     out
