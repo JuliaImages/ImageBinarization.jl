@@ -5,9 +5,6 @@
         img_gray = imresize(testimage("lena_gray_256"); ratio=0.25)
         img = copy(img_gray)
 
-        # Balanced
-        @test_nowarn Balanced()
-
         # binarize
         f = Balanced()
         binarized_img_1 = binarize(img, f)
