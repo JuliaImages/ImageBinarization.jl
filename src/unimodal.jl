@@ -1,17 +1,20 @@
-struct UnimodalRosin <: AbstractImageBinarizationAlgorithm end
-
 """
-```
-binarize(UnimodalRosin(), img)
-```
+    UnimodalRosin <: AbstractImageBinarizationAlgorithm
+    UnimodalRosin()
+
+    binarize([T,] img, f::UnimodalRosin)
+    binarize!([out,] img, f::UnimodalRosin)
+
 Uses Rosin's Unimodal threshold algorithm to binarize the image.
 
 
 # Output
 
-Returns the binarized image as an `Array{Gray{Bool},2}`.
+Return the binarized image as an `Array{Gray{T}}` of size `size(img)`. If
+`T` is not specified, it is inferred from `out` and `img`.
 
 # Details
+
 This algorithm first selects the bin in the image histogram with the highest
 frequency. The algorithm then searches from the location of the maximum bin to
 the last bin of the histogram for the first bin with a frequency of 0 (known as
@@ -21,6 +24,7 @@ chosen as the threshold value.
 
 
 ## Assumptions
+
 This algorithm assumes that:
 
 * The histogram is unimodal.
@@ -34,9 +38,9 @@ the greatest orthogonal distance, the leftmost bin is selected as the threshold.
 
 The function argument is described in more detail below.
 
-##  `img`
+##  `img::AbstractArray`
 
-An `AbstractArray` representing an image. The image is automatically converted
+The image that needs to be binarized. The image is automatically converted
 to `Gray` in order to construct the requisite graylevel histogram.
 
 
@@ -48,18 +52,22 @@ Compute the threshold for the "moonsurface" image in the `TestImages` package.
 using TestImages, ImageBinarization
 
 img = testimage("moonsurface")
-img_binary = binarize(UnimodalRosin(), img)
+img_binary = binarize(img, UnimodalRosin())
 ```
 
 # Reference
 1. P. L. Rosin, “Unimodal thresholding,” Pattern Recognition, vol. 34, no. 11, pp. 2083–2096, Nov. 2001.[doi:10.1016/s0031-3203(00)00136-9](https://doi.org/10.1016/s0031-3203%2800%2900136-9)
 """
-function binarize(algorithm::UnimodalRosin,  img::AbstractArray{T,2}) where T <: Colorant
-    img₀₁ = zeros(Gray{Bool}, axes(img))
+struct UnimodalRosin <: AbstractImageBinarizationAlgorithm end
+
+function (f::UnimodalRosin)(out::GenericGrayImage, img::GenericGrayImage)
     edges, counts = build_histogram(img,  256)
     t = find_threshold(HistogramThresholding.UnimodalRosin(), counts[1:end], edges)
-    for i in CartesianIndices(img)
-      img₀₁[i] = img[i] < t ? 0 : 1
+    @simd for i in CartesianIndices(img)
+      out[i] = img[i] < t ? 0 : 1
     end
-    img₀₁
+    out
 end
+
+(f::UnimodalRosin)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
+    f(out, of_eltype(Gray, img))
