@@ -21,8 +21,7 @@ include("testutils.jl")
     # include("polysegment.jl")
     # include("sauvola.jl")
     include("unimodal.jl")
-    # include("yen.jl")
-
+    include("yen.jl")
 end
 
 nothing
