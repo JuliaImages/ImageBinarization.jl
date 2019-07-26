@@ -11,7 +11,7 @@ include("testutils.jl")
 
     include("adaptive_threshold.jl")
     # include("balanced.jl")
-    # include("entropy.jl")
+    include("entropy.jl")
     # include("intermodes.jl")
     include("minimum.jl")
     # include("minimum_error.jl")
