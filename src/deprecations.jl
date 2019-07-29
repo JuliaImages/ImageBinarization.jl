@@ -18,3 +18,10 @@ function recommend_size(img)
     depwarn("deprecated: `binarize` automatically calls `recommend_size` now, it will be unexported in the future. Please check `AdaptiveThreshold` for more details.", :recommend_size)
     default_AdaptiveThreshold_window_size(img)
 end
+
+# move window_size out of Niblack
+# Deprecated in ImageBinarization v0.3
+function Niblack(window_size, bias)
+    depwarn("deprecated: window_size is no longer used as an `Niblac` field, instead, it's a keyword argument of `binarize`. Please check `Niblack` for more details.", :Niblack)
+    Niblack(bias)
+end
