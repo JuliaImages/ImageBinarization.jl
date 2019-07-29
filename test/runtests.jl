@@ -18,7 +18,7 @@ include("testutils.jl")
     include("niblack.jl")
     include("otsu.jl")
     include("polysegment.jl")
-    # include("sauvola.jl")
+    include("sauvola.jl")
     include("unimodal.jl")
     include("yen.jl")
 end
