@@ -1,19 +1,17 @@
-struct Sauvola <: AbstractImageBinarizationAlgorithm
-    window_size::Int
-    bias::Float32
-end
-
 """
-```
-binarize(Sauvola(; window_size = 7, bias = 0.2), img)
-```
+    Sauvola <: AbstractImageBinarizationAlgorithm
+    Sauvola(; bias = 0.2, window_size=7)
+
+    binarize([T,] img, f::Sauvola)
+    binarize!([out,] img, f::Sauvola)
 
 Applies Sauvola--Pietikäinen adaptive image binarization [1] under the
 assumption that the input image is textual.
 
 # Output
 
-Returns the binarized image as an `Array{Gray{Bool},2}`.
+Return the binarized image as an `Array{Gray{T}}` of size `size(img)`. If
+`T` is not specified, it is inferred from `out` and `img`.
 
 # Details
 
@@ -55,16 +53,17 @@ source image, runtime is significantly improved.
 An image which is binarized according to a per-pixel adaptive
 threshold into background (0) and foreground (1) pixel values.
 
-## `window_size` (denoted by ``w`` in the publication)
+## `window_size::Integer` (denoted by ``w`` in the publication)
 
 The threshold for each pixel is a function of the distribution of the intensities
 of all neighboring pixels in a square window around it. The side length of this
 window is ``2w + 1``, with the target pixel in the center position.
 
-## `bias` (denoted by ``k`` in the publication)
+## `bias::Real` (denoted by ``k`` in the publication)
 
 A user-defined biasing parameter. This can take negative values, though values
-in the range [0.2, 0.5] are typical.
+in the range [0.2, 0.5] are typical. According to [1], this algorithm is not too
+sensitive to the value of ``k```.
 
 # Example
 
@@ -74,7 +73,7 @@ Binarize the "cameraman" image in the `TestImages` package.
 using TestImages, ImageBinarization
 
 img = testimage("cameraman")
-img_binary = binarize(Sauvola(window_size = 9, bias = 0.2), img)
+img_binary = binarize(img, Sauvola(window_size = 9, bias = 0.2))
 ```
 
 # References
@@ -83,31 +82,42 @@ img_binary = binarize(Sauvola(window_size = 9, bias = 0.2), img)
 2. Wayne Niblack (1986). *An Introduction to Image Processing*. Prentice-Hall, Englewood Cliffs, NJ: 115-16.
 3. Faisal Shafait, Daniel Keysers and Thomas M. Breuel (2008). "Efficient implementation of local adaptive thresholding techniques using integral images". Proc. SPIE 6815, Document Recognition and Retrieval XV, 681510 (28 January 2008). [doi:10.1117/12.767755](https://doi.org/10.1117/12.767755)
 """
+struct Sauvola <: AbstractImageBinarizationAlgorithm
+    window_size::Int
+    bias::Float32
+end
+
+Sauvola(; window_size::Int = 7, bias::Real = 0.2) = Sauvola(window_size, bias)
+
 function binarize(algorithm::Sauvola, img::AbstractArray{T,2}) where T <: Colorant
     binarize(algorithm, Gray.(img))
 end
 
-function binarize(algorithm::Sauvola, img::AbstractArray{T,2}) where T <: AbstractGray
-    w = algorithm.window_size
-    k = algorithm.bias
-    img₀₁ = zeros(Gray{Bool}, axes(img))
+function (f::Sauvola)(out::GenericGrayImage, img::GenericGrayImage)
+    window_size = f.window_size
+    k = f.bias
+
+    window_size < 0 && throw(ArgumentError("window_size should be non-negative."))
+    size(out) == size(img) || throw(ArgumentError("out and img should have the same shape, instead they are $(size(out)) and $(size(img))"))
+
     img_raw = channelview(img)
     I = integral_image(img_raw)
     I² = integral_image(img_raw.^2)
-    R = 0.5
+    R = 0.5 # dynamic range of standard deviation, in [1] it's set to 128 for 8-bit image
 
     function threshold(pixel::CartesianIndex{2})
-        row₀, col₀, row₁, col₁ = get_window_bounds(img, pixel, w)
+        row₀, col₀, row₁, col₁ = get_window_bounds(img, pixel, window_size)
         m = μ_in_window(I, row₀, col₀, row₁, col₁)
         s = σ_in_window(I², m, row₀, col₀, row₁, col₁)
         return m * (1 + (k * ((s / R) - 1)))
     end
 
-    for pixel in CartesianIndices(img)
-        img₀₁[pixel] = img[pixel] <= threshold(pixel) ? 0 : 1
+    @simd for pixel in CartesianIndices(img)
+        out[pixel] = img[pixel] <= threshold(pixel) ? 0 : 1
     end
 
-    return img₀₁
+    return out
 end
 
-Sauvola(; window_size::Int = 7, bias::Real = 0.2) = Sauvola(window_size, bias)
+(f::Sauvola)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
+    f(out, of_eltype(Gray, img))
