@@ -1,12 +1,17 @@
-struct Polysegment <: AbstractImageBinarizationAlgorithm end
-
 """
-```
-binarize(Polysegment(), img)
-```
+    Polysegment <: AbstractImageBinarizationAlgorithm
+    Polysegment()
+
+    binarize([T,] img, f::Polysegment)
+    binarize!([out,] img, f::Polysegment)
 
 Uses the *polynomial segmentation* technique to group the image pixels
 into two categories (foreground and background).
+
+# Output
+
+Return the binarized image as an `Array{Gray{T}}` of size `size(img)`. If
+`T` is not specified, it is inferred from `out` and `img`.
 
 # Details
 
@@ -20,9 +25,9 @@ is closest.
 
 The function argument is described in more detail below.
 
-##  `img`
+##  `img::AbstractArray`
 
-An `AbstractArray` representing an image. The image is automatically converted
+The image that needs to be binarized. The image is automatically converted
 to `Gray`.
 
 
@@ -34,18 +39,16 @@ Binarize the "cameraman" image in the `TestImages` package.
 using TestImages, ImageBinarization
 
 img = testimage("cameraman")
-img_binary = binarize(Polysegment(), img)
+img_binary = binarize(img, Polysegment())
 ```
 
 ## Reference
 
 1. R. E. Vidal, "Generalized Principal Component Analysis (GPCA): An Algebraic Geometric Approach to Subspace Clustering and Motion Segmentation." Order No. 3121739, University of California, Berkeley, Ann Arbor, 2003.
 """
-function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: Colorant
-  binarize(Polysegment(), Gray.(img))
-end
+struct Polysegment <: AbstractImageBinarizationAlgorithm end
 
-function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: Gray
+function (f::Polysegment)(out::GenericGrayImage, img::GenericGrayImage)
   # Construct data matrix for second-degree polynomial (Equation 2.3) in [1].
   x = vec(img)
   Lₙ = hcat(ones(length(x)), x, x.^2)
@@ -54,10 +57,12 @@ function binarize(algorithm::Polysegment,  img::AbstractArray{T,2}) where T <: G
   p = Poly(vec(c))
   μ₁, μ₂ = sort(roots(p))
   # Binarize the image.
-  img₀₁ = zeros(Gray{Bool}, axes(img))
-  for i in CartesianIndices(img)
+  @simd for i in CartesianIndices(img)
     val = img[i]
-    img₀₁[i] = (val-μ₁)^2 < (val-μ₂)^2 ? 0 : 1
+    out[i] = (val-μ₁)^2 < (val-μ₂)^2 ? 0 : 1
   end
-  img₀₁
+  out
 end
+
+(f::Polysegment)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
+    f(out, of_eltype(Gray, img))
