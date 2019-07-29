@@ -7,7 +7,7 @@ using ImageBinarization: default_Niblack_window_size
         img_gray = imresize(testimage("lena_gray_256"); ratio=0.25)
         img = copy(img_gray)
 
-        # AdaptiveThreshold
+        # Niblack
         @test Niblack() == Niblack(0.2)
         @test Niblack(0.2) == Niblack(bias=0.2)
 

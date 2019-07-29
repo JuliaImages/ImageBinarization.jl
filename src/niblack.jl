@@ -112,6 +112,8 @@ function (f::Niblack)(out::GenericGrayImage,
     @simd for pixel in CartesianIndices(img)
         out[pixel] = img[pixel] <= threshold(pixel) ? 0 : 1
     end
+
+    return out
 end
 
 (f::Niblack)(out::GenericGrayImage, img::AbstractArray{<:Color3},
