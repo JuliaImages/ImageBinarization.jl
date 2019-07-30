@@ -8,15 +8,18 @@
 A Julia package containing a number of algorithms for analyzing images and
 automatically binarizing them into background and foreground.
 
-A full list of algorithms can be found in the [documentation](https://zygmuntszpak.github.io/ImageBinarization.jl/stable).
+In simple words, the general usage pattern of this package is:
 
-The general usage pattern is:
 ```julia
-imgb = binarize(algorithm::ThresholdAlgorithm, img)
+imgb = binarize(img, algorithm::AbstractImageBinarizationAlgorithm)
 ```
 
-<h2>Examples of ImageBinarization in action:</h2>
-<h>Image of cells:</h>
+For more detailed usage and a full list of algorithms, please check the [documentation](https://zygmuntszpak.github.io/ImageBinarization.jl/stable).
+
+## Examples of ImageBinarization in action
+
+### Example: cells
+
 <table width="500" border="0" cellpadding="5">
 
 <tr>
@@ -108,7 +111,8 @@ Balanced
 </tr>
 </table>
 
-<h>Image of moon surface: (Unimodal)</h>
+### Example: moon surface -- Unimodal
+
 <table width="500" border="0" cellpadding="5">
 
 <tr>
@@ -200,7 +204,8 @@ Balanced
 </tr>
 </table>
 
-<h>Image of text:</h>
+### Example: text
+
 <table width="500" border="0" cellpadding="5">
 
 <tr>
@@ -291,19 +296,3 @@ Balanced
 </td>
 </tr>
 </table>
-
-## Example
-Suppose one wants to binarize an image. This can be achieved by simply choosing
-an appropriate algorithm and calling `binarize` in the image. The background
-and foreground will be automatically binarized.
-
-```julia
-using ImageBinarization
-using TestImages # For the cameraman image.
-
-#load cameraman image
-img = testimage("cameraman")
-
-#binarize the image
-imgb = binarize(Otsu(), img)
-```

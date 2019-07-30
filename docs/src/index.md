@@ -8,9 +8,13 @@ Depth = 2
 
 ## Basic usage
 
-Each binarization algorithm in `ImageBinarization.jl` is an [`AbstractImageBinarizationAlgorithm`](@ref ImageBinarization.BinarizationAPI.AbstractImageBinarizationAlgorithm). To binarize an image, you only need to pass the algorithm and image to [`binarize`](@ref) or [`binarize!`](@ref).
+Each binarization algorithm in `ImageBinarization.jl` is an [`AbstractImageBinarizationAlgorithm`](@ref ImageBinarization.BinarizationAPI.AbstractImageBinarizationAlgorithm).
 
-Let's see a simple demo
+Suppose one wants to binarize an image. This can be achieved by simply choosing
+an appropriate algorithm and calling [`binarize`](@ref) or [`binarize!`](@ref) in the
+image. The background and foreground will be automatically binarized.
+
+Let's see a simple demo:
 
 ```@example
 using TestImages, ImageBinarization, FileIO # hide
