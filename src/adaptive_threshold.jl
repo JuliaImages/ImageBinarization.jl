@@ -21,7 +21,7 @@ to black, otherwise it is set to white.
 
 A computationally efficient method for computing the average of an ``s
 \times s`` neighbourhood is achieved by using an *integral image*
-[`integral_image`](@ref).
+`integral_image`.
 
 This algorithm works particularly well on images that have distinct contrast
 between background and foreground. See [1] for more details.
