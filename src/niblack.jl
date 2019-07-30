@@ -1,9 +1,9 @@
 @doc raw"""
     Niblack <: AbstractImageBinarizationAlgorithm
-    Niblack(; bias = 0.2)
+    Niblack(; window_size = 7, bias = 0.2)
 
-    binarize([T,] img, f::Niblack; [window_size])
-    binarize!([out,] img, f::Niblack; [window_size])
+    binarize([T,] img, f::Niblack)
+    binarize!([out,] img, f::Niblack)
 
 Applies Niblack adaptive thresholding [1] under the assumption that the input
 image is textual.
@@ -53,10 +53,6 @@ window is ``2w + 1``, with the target pixel in the center position.
 
 If not specified, `window_size` is `7`.
 
-!!! info
-
-    `window_size` is a keyword argument in [`binarize`](@ref) and [`binarize!`](@ref)
-
 # Example
 
 Binarize the "cameraman" image in the `TestImages` package.
@@ -74,27 +70,20 @@ img₀₁ = binarize(img, Niblack())
 [2] J. Sauvola and M. Pietikäinen (2000). "Adaptive document image binarization". *Pattern Recognition* 33 (2): 225-236. [doi:10.1016/S0031-3203(99)00055-2](https://doi.org/10.1016/S0031-3203(99)00055-2)
 """
 struct Niblack <: AbstractImageBinarizationAlgorithm
+    window_size::Int
     bias::Float32
-end
 
-function Niblack(; window_size = nothing, bias::Real = 0.2)
-    if window_size !== nothing
-        # deprecate window_size
-        return Niblack(window_size, bias)
-    else
-        return Niblack(bias)
+    function Niblack(window_size::Integer, bias::Real)
+        window_size < 0 && throw(ArgumentError("window_size should be non-negative."))
+        new(window_size, bias)
     end
 end
+
+Niblack(; window_size::Integer=7, bias::Real=0.2) = Niblack(window_size, bias)
 
 function (f::Niblack)(out::GenericGrayImage,
-                      img::GenericGrayImage;
-                      window_size::Union{Integer, Nothing} = nothing)
+                      img::GenericGrayImage)
 
-    if window_size === nothing
-        window_size = default_Niblack_window_size(img)
-    end
-
-    window_size < 0 && throw(ArgumentError("window_size should be non-negative."))
     size(out) == size(img) || throw(ArgumentError("out and img should have the same shape, instead they are $(size(out)) and $(size(img))"))
 
     k = f.bias
@@ -103,7 +92,7 @@ function (f::Niblack)(out::GenericGrayImage,
     I² = integral_image(img_raw.^2)
 
     function threshold(pixel::CartesianIndex{2})
-        row₀, col₀, row₁, col₁ = get_window_bounds(img, pixel, window_size)
+        row₀, col₀, row₁, col₁ = get_window_bounds(img, pixel, f.window_size)
         m = μ_in_window(I, row₀, col₀, row₁, col₁)
         s = σ_in_window(I², m, row₀, col₀, row₁, col₁)
         return m + (k * s)
@@ -116,10 +105,5 @@ function (f::Niblack)(out::GenericGrayImage,
     return out
 end
 
-(f::Niblack)(out::GenericGrayImage, img::AbstractArray{<:Color3},
-             args...; kwargs...) =
-    f(out, of_eltype(Gray, img), args...; kwargs...)
-
-# keep consistent to default_AdaptiveThreshold_window_size
-# TODO: infer a better window_size from `img` rather than using fixed number
-default_Niblack_window_size(img) = 7
+(f::Niblack)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
+    f(out, of_eltype(Gray, img))
