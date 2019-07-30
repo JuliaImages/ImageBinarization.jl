@@ -1,5 +1,3 @@
-using ImageBinarization: default_Niblack_window_size
-
 @testset "niblack" begin
     @info "Test: Niblack"
 
@@ -8,21 +6,18 @@ using ImageBinarization: default_Niblack_window_size
         img = copy(img_gray)
 
         # Niblack
-        @test Niblack() == Niblack(0.2)
-        @test Niblack(0.2) == Niblack(bias=0.2)
+        @test Niblack() == Niblack(7, 0.2)
+        @test Niblack(7, 0.2) == Niblack(window_size=7, bias=0.2)
 
         # window_size non-positive integer
-        f = Niblack()
-        @test_throws ArgumentError binarize(img, f, window_size = -10)
-        @test_throws TypeError binarize(img, f, window_size = 32.5)
+        @test_throws ArgumentError Niblack(window_size = -10)
+        @test_throws TypeError Niblack(window_size = 32.5)
 
         # binarize
-        f = Niblack(bias=0.2)
+        f = Niblack(window_size = 7, bias=0.2)
         binarized_img_1 = binarize(img, f)
         @test img == img_gray # img unchanged
         @test eltype(binarized_img_1) == Gray{N0f8}
-        @test binarize(img, f,
-                       window_size=default_Niblack_window_size(img)) == binarized_img_1
 
         binarized_img_2 = binarize(Gray{Bool}, img, f)
         @test img == img_gray # img unchanged
@@ -45,7 +40,7 @@ using ImageBinarization: default_Niblack_window_size
     @testset "Types" begin
         # Gray
         img_gray = imresize(testimage("lena_gray_256"); ratio=0.25)
-        f = Niblack(bias=0.2)
+        f = Niblack(window_size = 7, bias=0.2)
 
         type_list = generate_test_types([Float32, N0f8], [Gray])
         for T in type_list
@@ -55,7 +50,7 @@ using ImageBinarization: default_Niblack_window_size
 
         # Color3
         img_color = imresize(testimage("lena_color_256"); ratio=0.25)
-        f = Niblack(bias=0.2)
+        f = Niblack(window_size = 7, bias=0.2)
 
         type_list = generate_test_types([Float32, N0f8], [RGB, Lab])
         for T in type_list
@@ -67,7 +62,7 @@ using ImageBinarization: default_Niblack_window_size
     @testset "Numerical" begin
         # Check that the image only has ones or zeros.
         img = imresize(testimage("lena_gray_256"); ratio=0.25)
-        f = Niblack(bias=0.2)
+        f = Niblack(window_size = 7, bias=0.2)
         img₀₁ = binarize(img, f)
         non_zeros = findall(x -> x != 0.0 && x != 1.0, img₀₁)
         @test length(non_zeros) == 0
@@ -89,20 +84,11 @@ using ImageBinarization: default_Niblack_window_size
                 target_row₀ = (target_row + i) % 50
                 target_col₀ = (target_col + j) % 50
 
-                img_bin = binarize(img₀, Niblack(bias = -6), window_size=25)
+                img_bin = binarize(img₀, Niblack(window_size = 25, bias = -6))
                 @test sum(img_bin .== 0) == 1
                 @test img_bin[target_row₀, target_col₀] == 0
             end
         end
-    end
-
-    @testset "Miscellaneous" begin
-        img = testimage("lena_gray_256")
-        @test default_Niblack_window_size(img) == 7
-
-        # deprecations
-        @test (@test_deprecated Niblack(7, 0.2)) == Niblack(0.2)
-        @test (@test_deprecated Niblack(window_size=7, bias=0.2)) == Niblack(bias=0.2)
     end
 
 end
