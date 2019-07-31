@@ -1,73 +1,63 @@
 module ImageBinarization
 
-using ImageContrastAdjustment
-using ColorTypes
-using ColorVectorSpace
+using Base.Iterators: repeated
+using MappedArrays
 using LinearAlgebra
-using HistogramThresholding
 using Polynomials
 using Statistics
+
+using ImageContrastAdjustment
+using HistogramThresholding
+
 using ImageCore
+using ImageCore: GenericGrayImage
+using ColorVectorSpace
 
-abstract type BinarizationAlgorithm end
-struct Otsu <: BinarizationAlgorithm end
-struct Polysegment <: BinarizationAlgorithm end
-struct UnimodalRosin <: BinarizationAlgorithm end
-struct MinimumIntermodes <: BinarizationAlgorithm end
-struct Moments <: BinarizationAlgorithm end
-struct Intermodes <: BinarizationAlgorithm end
-struct MinimumError <: BinarizationAlgorithm end
-struct Balanced <: BinarizationAlgorithm end
-struct Yen <: BinarizationAlgorithm end
-struct Entropy <: BinarizationAlgorithm end
-
-struct AdaptiveThreshold <: BinarizationAlgorithm
-    window_size::Int
-    percentage::Int
-end
-
-struct Sauvola <: BinarizationAlgorithm
-    window_size::Int
-    bias::Float32
-end
-
-struct Niblack <: BinarizationAlgorithm
-    window_size::Int
-    bias::Float32
-end
+# TODO: port BinarizationAPI to ImagesAPI
+include("BinarizationAPI/BinarizationAPI.jl")
+import .BinarizationAPI: AbstractImageBinarizationAlgorithm,
+                         binarize, binarize!
 
 include("integral_image.jl")
 include("util.jl")
-include("balanced.jl")
-include("otsu.jl")
-include("polysegment.jl")
-include("unimodal.jl")
-include("minimum.jl")
-include("moments.jl")
-include("intermodes.jl")
-include("adaptive_threshold.jl")
-include("minimum_error.jl")
-include("yen.jl")
-include("entropy.jl")
-include("sauvola.jl")
-include("niblack.jl")
+include("compat.jl")
 
+# Concrete binarization algorithms
+
+include("algorithms/adaptive_threshold.jl") # AdaptiveThreshold
+include("algorithms/balanced.jl") # Balanced
+include("algorithms/entropy.jl") # Entropy
+include("algorithms/intermodes.jl") # Intermodes
+include("algorithms/minimum.jl") # MinimumIntermodes
+include("algorithms/minimum_error.jl") # MinimumError
+include("algorithms/moments.jl") # Moments
+include("algorithms/niblack.jl") # Niblack
+include("algorithms/otsu.jl") # Otsu
+include("algorithms/polysegment.jl") # Polysegment
+include("algorithms/sauvola.jl") # Sauvola
+include("algorithms/unimodal.jl") # UnimodalRosin
+include("algorithms/yen.jl") # Yen
+
+
+include("deprecations.jl")
 
 export
-    # main functions
-    binarize,
-    recommend_size,
-    AdaptiveThreshold,
-    Otsu,
+    # generic API
+    binarize, binarize!,
+
+    # Algorithms
+    AdaptiveThreshold, recommend_size,
     Balanced,
-    Yen,
-    Polysegment,
-    MinimumIntermodes,
-    Moments,
+    Entropy,
     Intermodes,
     MinimumError,
-    UnimodalRosin,
-    Entropy,
+    MinimumIntermodes,
+    Moments,
+    Niblack,
+    Otsu,
+    Polysegment,
     Sauvola,
-    Niblack
-end # module
+    UnimodalRosin,
+    Yen
+
+end # module ImageBinarization

@@ -1,4 +1,4 @@
-function get_window_bounds(img::AbstractArray{T,2}, pixel::CartesianIndex{2}, w::Integer) where T <: Color
+function get_window_bounds(img::GenericGrayImage, pixel::CartesianIndex{2}, w::Integer)
     row, col = pixel.I
     min_row, min_col = first.(axes(img))
     max_row, max_col = last.(axes(img))

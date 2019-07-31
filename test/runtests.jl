@@ -1,19 +1,27 @@
 using ImageBinarization
-using Test, TestImages, ColorTypes, ColorVectorSpace, FixedPointNumbers, Statistics
+using Test, TestImages
+using Statistics
+using ImageCore, ImageTransformations
+using ReferenceTests
+
+include("testutils.jl")
 
 @testset "ImageBinarization.jl" begin
-    include("polysegment.jl")
-    include("adaptive_threshold.jl")
-    include("unimodal.jl")
-    include("minimum.jl")
-    include("intermodes.jl")
-    include("minimum_error.jl")
-    include("moments.jl")
-    include("yen.jl")
-    include("balanced.jl")
-    include("otsu.jl")
-    include("entropy.jl")
     include("util.jl")
-    include("sauvola.jl")
-    include("niblack.jl")
+
+    include("algorithms/adaptive_threshold.jl")
+    include("algorithms/balanced.jl")
+    include("algorithms/entropy.jl")
+    include("algorithms/intermodes.jl")
+    include("algorithms/minimum.jl")
+    include("algorithms/minimum_error.jl")
+    include("algorithms/moments.jl")
+    include("algorithms/niblack.jl")
+    include("algorithms/otsu.jl")
+    include("algorithms/polysegment.jl")
+    include("algorithms/sauvola.jl")
+    include("algorithms/unimodal.jl")
+    include("algorithms/yen.jl")
 end
+
+nothing

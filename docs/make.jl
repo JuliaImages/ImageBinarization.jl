@@ -1,5 +1,12 @@
 push!(LOAD_PATH,"../src/")
-using Documenter, ImageBinarization, ColorTypes, ColorVectorSpace
+using Documenter, ImageBinarization
 makedocs(sitename="Documentation",
-            Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "true"))
+    format = Documenter.HTML(
+        prettyurls = get(ENV, "CI", nothing) == "true"
+    ),
+    pages = [
+        "Home" => "index.md",
+        "Function Reference" => "reference.md"
+    ]
+)
 deploydocs(repo = "github.com/zygmuntszpak/ImageBinarization.jl.git")
