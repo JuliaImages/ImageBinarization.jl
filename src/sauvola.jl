@@ -85,6 +85,11 @@ img_binary = binarize(img, Sauvola(window_size = 9, bias = 0.2))
 struct Sauvola <: AbstractImageBinarizationAlgorithm
     window_size::Int
     bias::Float32
+
+    function Sauvola(window_size::Integer, bias::Real)
+        window_size < 0 && throw(ArgumentError("window_size should be non-negative."))
+        new(window_size, bias)
+    end
 end
 
 Sauvola(; window_size::Int = 7, bias::Real = 0.2) = Sauvola(window_size, bias)
@@ -97,7 +102,6 @@ function (f::Sauvola)(out::GenericGrayImage, img::GenericGrayImage)
     window_size = f.window_size
     k = f.bias
 
-    window_size < 0 && throw(ArgumentError("window_size should be non-negative."))
     size(out) == size(img) || throw(ArgumentError("out and img should have the same shape, instead they are $(size(out)) and $(size(img))"))
 
     img_raw = channelview(img)

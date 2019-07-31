@@ -5,6 +5,14 @@
         img_gray = imresize(testimage("lena_gray_256"); ratio=0.25)
         img = copy(img_gray)
 
+        # Sauvola
+        @test Sauvola() == Sauvola(7, 0.2)
+        @test Sauvola(7, 0.2) == Sauvola(window_size=7, bias=0.2)
+
+        # window_size non-positive integer
+        @test_throws ArgumentError Sauvola(window_size = -10)
+        @test_throws TypeError Sauvola(window_size = 32.5)
+
         # binarize
         f = Sauvola(window_size=7, bias=0.2)
         binarized_img_1 = binarize(img, f)
