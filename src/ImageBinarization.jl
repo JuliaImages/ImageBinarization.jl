@@ -24,19 +24,19 @@ include("compat.jl")
 
 # Concrete binarization algorithms
 
-include("adaptive_threshold.jl") # AdaptiveThreshold
-include("balanced.jl") # Balanced
-include("entropy.jl") # Entropy
-include("intermodes.jl") # Intermodes
-include("minimum.jl") # MinimumIntermodes
-include("minimum_error.jl") # MinimumError
-include("moments.jl") # Moments
-include("niblack.jl") # Niblack
-include("otsu.jl") # Otsu
-include("polysegment.jl") # Polysegment
-include("sauvola.jl") # Sauvola
-include("unimodal.jl") # UnimodalRosin
-include("yen.jl") # Yen
+include("algorithms/adaptive_threshold.jl") # AdaptiveThreshold
+include("algorithms/balanced.jl") # Balanced
+include("algorithms/entropy.jl") # Entropy
+include("algorithms/intermodes.jl") # Intermodes
+include("algorithms/minimum.jl") # MinimumIntermodes
+include("algorithms/minimum_error.jl") # MinimumError
+include("algorithms/moments.jl") # Moments
+include("algorithms/niblack.jl") # Niblack
+include("algorithms/otsu.jl") # Otsu
+include("algorithms/polysegment.jl") # Polysegment
+include("algorithms/sauvola.jl") # Sauvola
+include("algorithms/unimodal.jl") # UnimodalRosin
+include("algorithms/yen.jl") # Yen
 
 
 include("deprecations.jl")

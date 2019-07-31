@@ -8,19 +8,20 @@ include("testutils.jl")
 
 @testset "ImageBinarization.jl" begin
     include("util.jl")
-    include("adaptive_threshold.jl")
-    include("balanced.jl")
-    include("entropy.jl")
-    include("intermodes.jl")
-    include("minimum.jl")
-    include("minimum_error.jl")
-    include("moments.jl")
-    include("niblack.jl")
-    include("otsu.jl")
-    include("polysegment.jl")
-    include("sauvola.jl")
-    include("unimodal.jl")
-    include("yen.jl")
+
+    include("algorithms/adaptive_threshold.jl")
+    include("algorithms/balanced.jl")
+    include("algorithms/entropy.jl")
+    include("algorithms/intermodes.jl")
+    include("algorithms/minimum.jl")
+    include("algorithms/minimum_error.jl")
+    include("algorithms/moments.jl")
+    include("algorithms/niblack.jl")
+    include("algorithms/otsu.jl")
+    include("algorithms/polysegment.jl")
+    include("algorithms/sauvola.jl")
+    include("algorithms/unimodal.jl")
+    include("algorithms/yen.jl")
 end
 
 nothing
