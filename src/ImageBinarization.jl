@@ -2,16 +2,16 @@ module ImageBinarization
 
 using Base.Iterators: repeated
 using MappedArrays
-
-using ImageContrastAdjustment
-using ColorTypes
-using ColorVectorSpace
 using LinearAlgebra
-using HistogramThresholding
 using Polynomials
 using Statistics
+
+using ImageContrastAdjustment
+using HistogramThresholding
+
 using ImageCore
 using ImageCore: GenericGrayImage
+using ColorVectorSpace
 
 # TODO: port BinarizationAPI to ImagesAPI
 include("BinarizationAPI/BinarizationAPI.jl")
