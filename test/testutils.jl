@@ -13,3 +13,15 @@ function generate_test_types(number_types::AbstractArray{<:DataType}, color_type
     end
     test_types
 end
+
+function binarization_equality(ratio = 0.01)
+    function (ref, x)
+        count = sum(ref .!= x)
+        max_count = ceil(Int, length(ref)*ratio)
+        rst = count <= max_count
+        if !rst
+            @warn "$count pixels are incorrectly binarized, at most $max_count is allowed."
+        end
+        return rst
+    end
+end
