@@ -70,8 +70,14 @@ end
 
 binarize(img::AbstractArray{T},
          f::AbstractImageBinarizationAlgorithm,
-         args...; kwargs...) where T <:Union{Number, Colorant} =
+         args...; kwargs...) where T <: Colorant =
     binarize(Gray{eltype(T)}, img, f, args...; kwargs...)
+
+# issue #46: Do not promote Number to Gray{<:Number}
+binarize(img::AbstractArray{T},
+         f::AbstractImageBinarizationAlgorithm,
+         args...; kwargs...) where T <: Number =
+    binarize(T, img, f, args...; kwargs...)
 
 ### Docstrings
 

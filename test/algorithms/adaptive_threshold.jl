@@ -38,6 +38,10 @@
         @test binarized_img_1 == binarized_img_2
         @test binarized_img_1 == binarized_img_3
         @test binarized_img_1 == binarized_img_4
+
+        for T in generate_test_types([Float32, N0f8, Bool], [Gray])
+            @test eltype(binarize(T, img, f)) == T
+        end
     end
 
     @testset "Types" begin
