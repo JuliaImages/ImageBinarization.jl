@@ -31,7 +31,7 @@
 
     @testset "Types" begin
         # Gray
-        img_gray = imresize(float64.(testimage("lena_gray_256")); ratio=0.25)
+        img_gray = imresize(testimage("lena_gray_256"); ratio=0.25)
         f = Balanced()
 
         type_list = generate_test_types([Float32, N0f8], [Gray])
@@ -41,7 +41,7 @@
         end
 
         # Color3
-        img_color = imresize(float64.(testimage("lena_color_256")); ratio=0.25)
+        img_color = imresize(testimage("lena_color_256"); ratio=0.25)
         f = Balanced()
 
         type_list = generate_test_types([Float32, N0f8], [RGB, Lab])
@@ -53,7 +53,7 @@
 
     @testset "Numerical" begin
         # Check that the image only has ones or zeros.
-        img = imresize(float64.(testimage("lena_gray_256")); ratio=0.25)
+        img = imresize(testimage("lena_gray_256"); ratio=0.25)
         f = Balanced()
         img₀₁ = binarize(img, f)
         non_zeros = findall(x -> x != 0.0 && x != 1.0, img₀₁)
