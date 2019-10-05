@@ -22,6 +22,7 @@ ImageContrastAdjustment = "^0"
 ImageCore = ">=0.8.3"
 Polynomials = "^0"
 julia = "^1"
+ReferenceTests = "0.7, 0.8"
 
 [extras]
 ImageMagick = "6218d12a-5da1-5696-b52f-db25d2ecc6d1"

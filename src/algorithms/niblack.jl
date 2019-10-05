@@ -83,6 +83,7 @@ Niblack(; window_size::Integer=7, bias::Real=0.2) = Niblack(window_size, bias)
 
 function (f::Niblack)(out::GenericGrayImage,
                       img::GenericGrayImage)
+    img = of_eltype(floattype(eltype(img)), img)
 
     size(out) == size(img) || throw(ArgumentError("out and img should have the same shape, instead they are $(size(out)) and $(size(img))"))
 

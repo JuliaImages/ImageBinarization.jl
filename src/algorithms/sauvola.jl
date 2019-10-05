@@ -94,11 +94,9 @@ end
 
 Sauvola(; window_size::Int = 7, bias::Real = 0.2) = Sauvola(window_size, bias)
 
-function binarize(algorithm::Sauvola, img::AbstractArray{T,2}) where T <: Colorant
-    binarize(algorithm, Gray.(img))
-end
-
 function (f::Sauvola)(out::GenericGrayImage, img::GenericGrayImage)
+    img = of_eltype(floattype(eltype(img)), img)
+
     window_size = f.window_size
     k = f.bias
 

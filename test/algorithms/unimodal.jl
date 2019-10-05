@@ -40,7 +40,7 @@
         type_list = generate_test_types([Float32, N0f8], [Gray])
         for T in type_list
             img = T.(img_gray)
-            @test_reference "References/UnimodalRosin_Gray.png" Gray.(binarize(img, f))
+            @test_reference "References/UnimodalRosin_Gray.png" Gray.(binarize(img, f)) by=binarization_equality()
         end
 
         # Color3
@@ -50,7 +50,7 @@
         type_list = generate_test_types([Float32, N0f8], [RGB, Lab])
         for T in type_list
             img = T.(img_gray)
-            @test_reference "References/UnimodalRosin_Color3.png" Gray.(binarize(img, f))
+            @test_reference "References/UnimodalRosin_Color3.png" Gray.(binarize(img, f)) by=binarization_equality()
         end
     end
 
