@@ -14,8 +14,13 @@ function generate_test_types(number_types::AbstractArray{<:DataType}, color_type
     test_types
 end
 
-function binarization_equality(ratio = 0.01)
+function binarization_equality(ratio = 0.0)
     function (ref, x)
+        if size(ref) != size(x)
+            @warn "test fails because size(ref) != size(x)"
+            return false
+        end
+
         count = sum(ref .!= x)
         max_count = ceil(Int, length(ref)*ratio)
         rst = count <= max_count
