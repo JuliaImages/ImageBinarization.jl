@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · Documentation</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link href="assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>Documentation</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li class="current"><a class="toctext" href>Home</a><ul class="internal"><li><a class="toctext" href="#Basic-usage-1">Basic usage</a></li><li><a class="toctext" href="#Examples-of-ImageBinarization-in-action-1">Examples of ImageBinarization in action</a></li></ul></li><li><a class="toctext" href="reference/">Function Reference</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Home</a></li></ul><a class="edit-page" href="https://github.com/zygmuntszpak/ImageBinarization.jl/blob/master/docs/src/index.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Home</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="ImageBinarization.jl-Documentation-1" href="#ImageBinarization.jl-Documentation-1">ImageBinarization.jl Documentation</a></h1><p>A Julia package containing a number of algorithms for analyzing images and automatically binarizing them into background and foreground.</p><ul><li><a href="#ImageBinarization.jl-Documentation-1">ImageBinarization.jl Documentation</a></li><ul><li><a href="#Basic-usage-1">Basic usage</a></li><li><a href="#Examples-of-ImageBinarization-in-action-1">Examples of ImageBinarization in action</a></li></ul><li><a href="reference/#function_reference-1">Function References</a></li><ul><li><a href="reference/#General-function-1">General function</a></li><li><a href="reference/#Algorithms-1">Algorithms</a></li></ul></ul><h2><a class="nav-anchor" id="Basic-usage-1" href="#Basic-usage-1">Basic usage</a></h2><p>Each binarization algorithm in <code>ImageBinarization.jl</code> is an <a href="reference/#ImageBinarization.BinarizationAPI.AbstractImageBinarizationAlgorithm"><code>AbstractImageBinarizationAlgorithm</code></a>.</p><p>Suppose one wants to binarize an image. This can be achieved by simply choosing an appropriate algorithm and calling <a href="reference/#ImageBinarization.BinarizationAPI.binarize"><code>binarize</code></a> or <a href="reference/#ImageBinarization.BinarizationAPI.binarize!"><code>binarize!</code></a> in the image. The background and foreground will be automatically binarized.</p><p>Let&#39;s see a simple demo:</p><pre><code class="language-julia">img = testimage(&quot;cameraman&quot;)
+alg = Otsu()
+img₀₁ = binarize(img, alg)</code></pre><img src="images/demo.jpg" width="400px" alt="demo image" /><p>This usage reads as &quot;<code>binarize</code> the image <code>img</code> with algorithm <code>alg</code>&quot;</p><p>For more advanced usage, please check <a href="reference/#function_reference-1">function reference</a> page.</p><h2><a class="nav-anchor" id="Examples-of-ImageBinarization-in-action-1" href="#Examples-of-ImageBinarization-in-action-1">Examples of ImageBinarization in action</a></h2><h>Image of cells:</h>
+<table width="500" border="0" cellpadding="5">
+
+<tr>
+<td align="center" valign="center">
+<img src="images/cells.jpg" width="100px" alt="Original image" />
+<br />
+Original image
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/cells_Intermodes.jpg" width="100px" alt="Intermodes" />
+<br />
+Intermodes
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_MinimumError.jpg" width="100px" alt="Minimum Error" />
+<br />
+Minimum Error
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_MinimumIntermodes.jpg" width="100px" alt="Minimum" />
+<br />
+Minimum
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/cells_Moments.jpg" width="100px" alt="Moments" />
+<br />
+Moments
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_otsu.jpg" width="100px" alt="Otsu" />
+<br />
+Otsu
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_Polysegment.jpg" width="100px" alt="Polysegment" />
+<br />
+Polysegment
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/cells_UnimodalRosin.jpg" width="100px" alt="Rosin" />
+<br />
+Rosin
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_sauvola.png" width="100px" alt="Sauvola" />
+<br />
+Sauvola
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_niblack.png" width="100px" alt="Niblack" />
+<br />
+Niblack
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/cells_Adaptive.jpg" width="100px" alt="Adaptive" />
+<br />
+Adaptive
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_Yen.jpg" width="100px" alt="Yen" />
+<br />
+Yen
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_Balanced.jpg" width="100px" alt="Balanced" />
+<br />
+Balanced
+</td>
+</tr>
+</table>
+
+<h>Image of moon surface: (Unimodal)</h>
+<table width="500" border="0" cellpadding="5">
+
+<tr>
+<td align="center" valign="center">
+<img src="images/moon.jpg" width="100px" alt="Original image" />
+<br />
+Original image
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/moon_Intermodes.jpg" width="100px" alt="Intermodes" />
+<br />
+Intermodes
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_MinimumError.jpg" width="100px" alt="Minimum Error" />
+<br />
+Minimum Error
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_MinimumIntermodes.jpg" width="100px" alt="Minimum" />
+<br />
+Minimum
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/moon_Moments.jpg" width="100px" alt="Moments" />
+<br />
+Moments
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_otsu.jpg" width="100px" alt="Otsu" />
+<br />
+Otsu
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_Polysegment.jpg" width="100px" alt="Polysegment" />
+<br />
+Polysegment
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/moon_UnimodalRosin.jpg" width="100px" alt="Rosin" />
+<br />
+Rosin
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_sauvola.png" width="100px" alt="Sauvola" />
+<br />
+Sauvola
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_niblack.png" width="100px" alt="Niblack" />
+<br />
+Niblack
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/moon_Adaptive.jpg" width="100px" alt="Adaptive" />
+<br />
+Adaptive
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_Yen.jpg" width="100px" alt="Yen" />
+<br />
+Yen
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_Balanced.jpg" width="100px" alt="Balanced" />
+<br />
+Balanced
+</td>
+</tr>
+</table>
+
+<h>Image of text:</h>
+<table width="500" border="0" cellpadding="5">
+
+<tr>
+<td align="center" valign="center">
+<img src="images/page.jpg" width="100px" alt="Original image" />
+<br />
+Original image
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/page_Intermodes.jpg" width="100px" alt="Intermodes" />
+<br />
+Intermodes
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_MinimumError.jpg" width="100px" alt="Minimum Error" />
+<br />
+Minimum Error
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_MinimumIntermodes.jpg" width="100px" alt="Minimum" />
+<br />
+Minimum
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/page_Moments.jpg" width="100px" alt="Moments" />
+<br />
+Moments
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_otsu.jpg" width="100px" alt="Otsu" />
+<br />
+Otsu
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_Polysegment.jpg" width="100px" alt="Polysegment" />
+<br />
+Polysegment
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/page_UnimodalRosin.jpg" width="100px" alt="Rosin" />
+<br />
+Rosin
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_sauvola.png" width="100px" alt="Sauvola" />
+<br />
+Sauvola
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_niblack.png" width="100px" alt="Niblack" />
+<br />
+Niblack
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/page_Adaptive.jpg" width="100px" alt="Adaptive" />
+<br />
+Adaptive
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_Yen.jpg" width="100px" alt="yen" />
+<br />
+Yen
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_Balanced.jpg" width="100px" alt="Balanced" />
+<br />
+Balanced
+</td>
+</tr>
+</table><footer><hr/><a class="next" href="reference/"><span class="direction">Next</span><span class="title">Function Reference</span></a></footer></article></body></html>
