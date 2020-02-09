@@ -27,20 +27,12 @@ refer to the [troubleshooting
 guide](https://juliaimages.org/latest/troubleshooting/#Installation-troubleshooting-1).
 
 Image display is typically handled by the
-[ImageView.jl](https://github.com/JuliaImages/ImageView.jl) package. However,
-there are some known issues with this package. For example, on `Windows` the
-package has the side-effect of introducing substantial [input
-lag](https://github.com/JuliaImages/ImageView.jl/issues/176) when typing in the
-Julia REPL. Also, as of writing, some users of `MacOS` are [unable to
-use](https://github.com/JuliaImages/ImageView.jl/issues/175) the `ImageView.jl`
-package.
-
-As an alternative, one can display an image using the
-[Makie.jl](https://github.com/JuliaPlots/Makie.jl) plotting package. There is
+[ImageView.jl](https://github.com/JuliaImages/ImageView.jl) package.
+Alternatives include the various plotting packages, including
+[Makie.jl](https://github.com/JuliaPlots/Makie.jl). There is
 also the [ImageShow.jl](https://github.com/JuliaImages/ImageShow.jl) package
 which facilitates displaying images in `Jupyter` notebooks via
 [IJulia.jl](https://github.com/JuliaLang/IJulia.jl).
-
 Finally, one can also obtain a useful preview of an image in the REPL using the
 [ImageInTerminal.jl](https://github.com/JuliaImages/ImageInTerminal.jl) package.
 However, this package assumes that the terminal uses a monospace font, and tends
