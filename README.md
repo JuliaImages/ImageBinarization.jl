@@ -1,9 +1,10 @@
 # ImageBinarization
-[![Build Status](https://travis-ci.com/zygmuntszpak/ImageBinarization.jl.svg?branch=master)](https://travis-ci.com/zygmuntszpak/ImageBinarization.jl)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/zygmuntszpak/ImageBinarization.jl?svg=true)](https://ci.appveyor.com/project/zygmuntszpak/ImageBinarization-jl)
-[![Codecov](https://codecov.io/gh/zygmuntszpak/ImageBinarization.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/zygmuntszpak/ImageBinarization.jl)
-[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://zygmuntszpak.github.io/ImageBinarization.jl/stable)
-[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://zygmuntszpak.github.io/ImageBinarization.jl/dev)
+[![][travis-img]][travis-url]
+[![][appveyor-img]][appveyor-url]
+[![][pkgeval-img]][pkgeval-url]
+[![][codecov-img]][codecov-url]
+[![][docs-stable-img]][docs-stable-url]
+[![][docs-dev-img]][docs-dev-url]
 
 A Julia package containing a number of algorithms for analyzing images and
 automatically binarizing them into background and foreground.
@@ -14,7 +15,7 @@ In simple words, the general usage pattern of this package is:
 imgb = binarize(img, algorithm::AbstractImageBinarizationAlgorithm)
 ```
 
-For more detailed usage and a full list of algorithms, please check the [documentation](https://zygmuntszpak.github.io/ImageBinarization.jl/stable).
+For more detailed usage and a full list of algorithms, please check the [documentation][docs-stable-url].
 
 ## Examples of ImageBinarization in action
 
@@ -296,3 +297,18 @@ Balanced
 </td>
 </tr>
 </table>
+
+<!-- URLS -->
+
+[pkgeval-img]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/I/ImageBinarization.svg
+[pkgeval-url]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/report.html
+[travis-img]: https://travis-ci.com/zygmuntszpak/ImageBinarization.jl.svg?branch=master
+[travis-url]: https://travis-ci.com/zygmuntszpak/ImageBinarization.jl
+[appveyor-img]: https://ci.appveyor.com/api/projects/status/github/zygmuntszpak/ImageBinarization.jl?svg=true
+[appveyor-url]: https://ci.appveyor.com/project/zygmuntszpak/ImageBinarization-jl
+[codecov-img]: https://codecov.io/gh/zygmuntszpak/ImageBinarization.jl/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/zygmuntszpak/ImageBinarization.jl
+[docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-stable-url]: https://zygmuntszpak.github.io/ImageBinarization.jl/stable
+[docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
+[docs-dev-url]: https://zygmuntszpak.github.io/ImageBinarization.jl/dev
