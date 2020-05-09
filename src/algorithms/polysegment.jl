@@ -54,7 +54,7 @@ function (f::Polysegment)(out::GenericGrayImage, img::GenericGrayImage)
   Lₙ = hcat(ones(length(x)), x, x.^2)
   F = svd(Lₙ)
   c = F.Vt[end,:]
-  p = Poly(vec(c))
+  p = Polynomial(vec(c))
   μ₁, μ₂ = sort(roots(p))
   # Binarize the image.
   @simd for i in CartesianIndices(img)
