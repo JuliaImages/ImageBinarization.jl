@@ -15,7 +15,9 @@ notifications:
   email: false
 after_success:
   - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
-
+cache:
+  directories:
+  - $HOME/.julia/artifacts
 jobs:
   include:
     - stage: "Documentation"
