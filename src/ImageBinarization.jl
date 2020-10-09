@@ -1,7 +1,6 @@
 module ImageBinarization
 
 using Base.Iterators: repeated
-using MappedArrays
 using LinearAlgebra
 using Polynomials
 using Statistics
@@ -10,6 +9,7 @@ using ImageContrastAdjustment
 using HistogramThresholding
 
 using ImageCore
+using ImageCore.MappedArrays
 using ImageCore: GenericGrayImage
 using ColorVectorSpace
 
