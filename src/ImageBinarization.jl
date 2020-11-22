@@ -27,21 +27,11 @@ include("compat.jl")
 # Concrete binarization algorithms
 
 # Balanced, Entropy, Intermodes, Minimum, MinimumError, Moments, Otsu, UnimodalRosin, Yen
-include("algorithms/binary_histogram_threshold.jl")
+include("algorithms/single_histogram_threshold.jl")
 include("algorithms/adaptive_threshold.jl") # AdaptiveThreshold
-# include("algorithms/balanced.jl") # Balanced
-# include("algorithms/entropy.jl") # Entropy
-# include("algorithms/intermodes.jl") # Intermodes
-# include("algorithms/minimum.jl") # MinimumIntermodes
-# include("algorithms/minimum_error.jl") # MinimumError
-# include("algorithms/moments.jl") # Moments
 include("algorithms/niblack.jl") # Niblack
-# include("algorithms/otsu.jl") # Otsu
 include("algorithms/polysegment.jl") # Polysegment
 include("algorithms/sauvola.jl") # Sauvola
-# include("algorithms/unimodal.jl") # UnimodalRosin
-# include("algorithms/yen.jl") # Yen
-
 
 include("deprecations.jl")
 
@@ -51,17 +41,11 @@ export
 
     # Algorithms
     AdaptiveThreshold, recommend_size,
-    Balanced,
-    Entropy,
-    Intermodes,
-    MinimumError,
-    MinimumIntermodes,
-    Moments,
     Niblack,
-    Otsu,
     Polysegment,
     Sauvola,
-    UnimodalRosin,
-    Yen
+    
+    # also reexport algorithms in HistogramThresholding
+    SingleHistogramThreshold
 
 end # module ImageBinarization
