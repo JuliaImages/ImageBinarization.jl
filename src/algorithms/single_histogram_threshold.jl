@@ -97,10 +97,10 @@ function binarize(img::AbstractArray{T}, f::ThresholdAlgorithm, args...; kwargs.
 end
 
 
-function (f::SingleHistogramThreshold)(out::GenericGrayImage{T}, img::GenericGrayImage) where T
+function (f::SingleHistogramThreshold)(out::GenericGrayImage, img::GenericGrayImage)
     edges, counts = build_histogram(img, f.nbins)
     t = find_threshold(f.alg, counts[1:end], edges)
-    @. out = T(img > t)
+    @. out = img > t # here we rely on implicit type conversion to `eltype(out)`
 end
 
 (f::SingleHistogramThreshold)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
