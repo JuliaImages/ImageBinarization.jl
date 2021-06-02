@@ -122,4 +122,4 @@ function (f::Sauvola)(out::GenericGrayImage, img::GenericGrayImage)
 end
 
 (f::Sauvola)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
-    f(out, of_eltype(Gray, img))
+    f(out, eltype(out).(img))

@@ -107,4 +107,4 @@ function (f::Niblack)(out::GenericGrayImage,
 end
 
 (f::Niblack)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
-    f(out, of_eltype(Gray, img))
+    f(out, eltype(out).(img))

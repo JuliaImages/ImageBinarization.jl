@@ -104,4 +104,4 @@ function (f::SingleHistogramThreshold)(out::GenericGrayImage, img::GenericGrayIm
 end
 
 (f::SingleHistogramThreshold)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
-    f(out, of_eltype(Gray, img))
+    f(out, eltype(out).(img))

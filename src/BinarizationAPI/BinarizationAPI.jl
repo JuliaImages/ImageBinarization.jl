@@ -2,7 +2,7 @@
 # proposed in https://github.com/JuliaImages/ImagesAPI.jl/pull/3
 module BinarizationAPI
 
-using ColorTypes
+using ImageCore # we actually only need ColorTypes
 const GenericGrayImage = AbstractArray{<:Union{Number, AbstractGray}}
 
 """
