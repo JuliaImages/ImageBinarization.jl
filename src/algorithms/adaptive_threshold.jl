@@ -131,4 +131,4 @@ end
 
 # first do Color3 to Gray conversion
 (f::AdaptiveThreshold)(out::GenericGrayImage, img::AbstractArray{<:Color3}, args...; kwargs...) =
-    f(out, of_eltype(Gray, img), args...; kwargs...)
+    f(out, eltype(out).(img), args...; kwargs...)
