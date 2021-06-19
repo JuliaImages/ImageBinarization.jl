@@ -1,6 +1,5 @@
 # ImageBinarization
 [![][travis-img]][travis-url]
-[![][appveyor-img]][appveyor-url]
 [![][pkgeval-img]][pkgeval-url]
 [![][codecov-img]][codecov-url]
 [![][docs-stable-img]][docs-stable-url]
