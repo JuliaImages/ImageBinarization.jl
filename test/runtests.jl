@@ -2,6 +2,7 @@ using ImageBinarization
 using Test, TestImages
 using Statistics
 using ImageCore, ImageTransformations
+using OffsetArrays
 using ReferenceTests
 
 include("testutils.jl")
