@@ -63,7 +63,7 @@ function binarize(::Type{T},
                   img,
                   f::AbstractImageBinarizationAlgorithm,
                   args...; kwargs...) where T
-    out = Array{T}(undef, size(img))
+    out = similar(Array{T}, axes(img))
     binarize!(out, img, f, args...; kwargs...)
     return out
 end

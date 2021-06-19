@@ -98,4 +98,16 @@
             @test img₀₁[minpos] == 0
         end
     end
+
+    @testset "Offset Arrays" begin
+        # Verify that the algorithms give equivalent results on OffsetArrays
+        img = imresize(testimage("cameraman"); ratio=0.25)
+        offset_img = OffsetArray(img, OffsetArrays.Origin(0))
+        for (fname, f) in threshold_methods
+            img₀₁ = binarize(img, f)
+            offset_img₀₁ = binarize(offset_img, f)
+            @test axes(offset_img₀₁) == axes(offset_img)
+            @test img₀₁ == OffsetArrays.no_offset_view(offset_img₀₁)
+        end
+    end
 end
