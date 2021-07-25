@@ -106,5 +106,9 @@ function (f::Niblack)(out::GenericGrayImage,
     return out
 end
 
-(f::Niblack)(out::GenericGrayImage, img::AbstractArray{<:Color3}) =
-    f(out, eltype(out).(img))
+function (f::Niblack)(out::GenericGrayImage, img::AbstractArray{<:Color3})
+    # map `img` to grayspace while keeping the storage type
+    # TODO: this mapping operation can be done lazily to reduce memory allocation
+    GT = base_color_type(eltype(out)){eltype(eltype(img))}
+    f(out, GT.(img))
+end
