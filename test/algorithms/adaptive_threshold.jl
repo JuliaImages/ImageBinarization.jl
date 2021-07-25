@@ -64,6 +64,18 @@
             img = T.(img_gray)
             @test_reference "References/AdaptiveThreshold_Color3.png" Gray.(binarize(img, f)) by=binarization_equality()
         end
+
+        # issue #83
+        @testset "explicit Bool type" begin
+            img_ori = imresize(testimage("cameraman"); ratio=0.25)
+            for T in [RGB, Gray]
+                img = T.(img_ori)
+                f = AdaptiveThreshold(img)
+                for out_T in [Gray{Bool}, Bool]
+                    @test binarize(out_T, img, f) == out_T.(binarize(img, f))
+                end
+            end
+        end
     end
 
     @testset "Numerical" begin
