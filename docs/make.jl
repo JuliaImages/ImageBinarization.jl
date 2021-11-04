@@ -1,4 +1,3 @@
-push!(LOAD_PATH,"../src/")
 using Documenter, ImageBinarization
 makedocs(sitename="Documentation",
     format = Documenter.HTML(

@@ -23,44 +23,9 @@ ImageBinarization.BinarizationAPI.AbstractImageBinarizationAlgorithm
 AdaptiveThreshold
 ```
 
-### Balanced
-```@docs
-Balanced
-```
-
-### Entropy
-```@docs
-Entropy
-```
-
-### Intermodes
-```@docs
-Intermodes
-```
-
-### Minimum Error
-```@docs
-MinimumError
-```
-
-### Minimum Intermodes
-```@docs
-MinimumIntermodes
-```
-
-### Moments
-```@docs
-Moments
-```
-
 ### Niblack
 ```@docs
 Niblack
-```
-
-### Otsu
-```@docs
-Otsu
 ```
 
 ### Polysegment
@@ -73,12 +38,11 @@ Polysegment
 Sauvola
 ```
 
-### Unimodal Rosin
-```@docs
-UnimodalRosin
-```
+### Algorithms that utilizes single histogram-threshold
 
-### Yen
+The core functionality of these algorithms are supported by
+[HistogramThresholding.jl](https://github.com/JuliaImages/HistogramThresholding.jl)
+
 ```@docs
-Yen
+SingleHistogramThreshold
 ```
