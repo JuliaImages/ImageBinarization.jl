@@ -39,7 +39,7 @@ construct the requisite graylevel histogram.
 `ThresholdAlgorithm` is an Abstract type defined in `ThresholdAlgorithm.jl`, it provides various
 threshold finding algorithms:
 
-$(mapreduce(x->"- [`"*string(x)*"`](@ref)", (x,y)->x*"\n"*y, threshold_methods))
+$(mapreduce(x->"- `"*string(x)*"`", (x,y)->x*"\n"*y, threshold_methods))
 
 For the more detailed explaination and the construction, please refer to each concrete algorithm.
 For example, type `?Otsu` in REPL will give you more details on how to use `Otsu` methods.
