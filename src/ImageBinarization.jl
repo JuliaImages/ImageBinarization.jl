@@ -6,7 +6,6 @@ using Polynomials
 using Statistics
 using Reexport
 
-using ImageContrastAdjustment
 @reexport using HistogramThresholding
 
 using ImageCore
@@ -18,7 +17,7 @@ using ColorVectorSpace
 include("BinarizationAPI/BinarizationAPI.jl")
 import .BinarizationAPI: AbstractImageBinarizationAlgorithm,
                          binarize, binarize!
-import HistogramThresholding: ThresholdAlgorithm
+import HistogramThresholding: AbstractThresholdAlgorithm
 
 include("integral_image.jl")
 include("util.jl")

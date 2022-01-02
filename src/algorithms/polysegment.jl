@@ -13,6 +13,8 @@ into two categories (foreground and background).
 Return the binarized image as an `Array{Gray{T}}` of size `size(img)`. If
 `T` is not specified, it is inferred from `out` and `img`.
 
+# Extended help
+
 # Details
 
 The approach involves constructing a univariate second-degree polynomial

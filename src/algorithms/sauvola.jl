@@ -13,6 +13,8 @@ assumption that the input image is textual.
 Return the binarized image as an `Array{Gray{T}}` of size `size(img)`. If
 `T` is not specified, it is inferred from `out` and `img`.
 
+# Extended help
+
 # Details
 
 The input image is binarized by varying the threshold across the image, using
