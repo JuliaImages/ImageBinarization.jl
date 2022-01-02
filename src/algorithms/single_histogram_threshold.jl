@@ -13,10 +13,10 @@ threshold_methods = (
 
 """
     SingleHistogramThreshold <: AbstractImageBinarizationAlgorithm
-    SingleHistogramThreshold(alg::ThresholdAlgorithm; nbins=256)
+    SingleHistogramThreshold(alg::AbstractThresholdAlgorithm; nbins=256)
 
-    binarize([T,] img, f::ThresholdAlgorithm; nbins=256)
-    binarize!([out,] img, f::ThresholdAlgorithm; nbins=256)
+    binarize([T,] img, f::AbstractThresholdAlgorithm; nbins=256)
+    binarize!([out,] img, f::AbstractThresholdAlgorithm; nbins=256)
 
 Binarizes the image `img` using the threshold found by given threshold finding algorithm `alg`.
 
@@ -34,10 +34,10 @@ The function argument is described in more detail below.
 The image that needs to be binarized.  The image is automatically converted to `Gray` in order to
 construct the requisite graylevel histogram.
 
-## `alg::ThresholdAlgorithm`
+## `alg::AbstractThresholdAlgorithm`
 
-`ThresholdAlgorithm` is an Abstract type defined in `ThresholdAlgorithm.jl`, it provides various
-threshold finding algorithms:
+`AbstractThresholdAlgorithm` is an abstract type defined in `ThresholdAPI.jl` in the
+`HistogramThreshold.jl` package, it provides various threshold finding algorithms:
 
 $(mapreduce(x->"- `"*string(x)*"`", (x,y)->x*"\n"*y, threshold_methods))
 
@@ -74,24 +74,24 @@ img_binary = binarize(img, f)
 struct SingleHistogramThreshold{T} <: AbstractImageBinarizationAlgorithm
     alg::T
     nbins::Int
-    function SingleHistogramThreshold(alg::T; nbins::Integer) where T <: ThresholdAlgorithm
+    function SingleHistogramThreshold(alg::T; nbins::Integer) where T <: AbstractThresholdAlgorithm
         new{T}(alg, nbins)
     end
 end
 
-function binarize!(out::GenericGrayImage, img, f::ThresholdAlgorithm, args...; nbins::Integer=256, kwargs...)
+function binarize!(out::GenericGrayImage, img, f::AbstractThresholdAlgorithm, args...; nbins::Integer=256, kwargs...)
     binarize!(out, img, SingleHistogramThreshold(f, nbins=nbins), args...; kwargs...)
 end
-function binarize!(img::GenericGrayImage, f::ThresholdAlgorithm, args...; nbins::Integer=256, kwargs...)
+function binarize!(img::GenericGrayImage, f::AbstractThresholdAlgorithm, args...; nbins::Integer=256, kwargs...)
     binarize!(img, SingleHistogramThreshold(f, nbins=nbins), args...; kwargs...)
 end
-function binarize(::Type{T}, img, f::ThresholdAlgorithm, args...; nbins::Integer=256, kwargs...) where T
+function binarize(::Type{T}, img, f::AbstractThresholdAlgorithm, args...; nbins::Integer=256, kwargs...) where T
     binarize(T, img, SingleHistogramThreshold(f, nbins=nbins), args...; kwargs...)
 end
-function binarize(img, f::ThresholdAlgorithm, args...; nbins::Integer=256, kwargs...)
+function binarize(img, f::AbstractThresholdAlgorithm, args...; nbins::Integer=256, kwargs...)
     binarize(ccolor(Gray, eltype(img)), img, SingleHistogramThreshold(f, nbins=nbins), args...; kwargs...)
 end
-function binarize(img::AbstractArray{T}, f::ThresholdAlgorithm, args...; kwargs...) where T <: Number
+function binarize(img::AbstractArray{T}, f::AbstractThresholdAlgorithm, args...; kwargs...) where T <: Number
     # issue #46: Do not promote Number to Gray{<:Number}
     binarize(T, img, f, args...; kwargs...)
 end
