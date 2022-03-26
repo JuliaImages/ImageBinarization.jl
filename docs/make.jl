@@ -8,4 +8,4 @@ makedocs(sitename="Documentation",
         "Function Reference" => "reference.md"
     ]
 )
-deploydocs(repo = "github.com/zygmuntszpak/ImageBinarization.jl.git")
+deploydocs(repo = "github.com/JuliaImages/ImageBinarization.jl.git")
