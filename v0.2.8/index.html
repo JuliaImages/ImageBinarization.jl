@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · Documentation</title><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.039/juliamono-regular.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>Documentation</a></span></div><form class="docs-search" action="search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a><ul class="internal"><li><a class="tocitem" href="#Getting-started"><span>Getting started</span></a></li><li><a class="tocitem" href="#Basic-usage"><span>Basic usage</span></a></li><li><a class="tocitem" href="#Examples-of-ImageBinarization-in-action"><span>Examples of ImageBinarization in action</span></a></li></ul></li><li><a class="tocitem" href="reference/">Function Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaImages/ImageBinarization.jl/blob/master/docs/src/index.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="ImageBinarization.jl-Documentation"><a class="docs-heading-anchor" href="#ImageBinarization.jl-Documentation">ImageBinarization.jl Documentation</a><a id="ImageBinarization.jl-Documentation-1"></a><a class="docs-heading-anchor-permalink" href="#ImageBinarization.jl-Documentation" title="Permalink"></a></h1><p>A Julia package containing a number of algorithms for analyzing images and automatically binarizing them into background and foreground.</p><ul><li><a href="#ImageBinarization.jl-Documentation">ImageBinarization.jl Documentation</a></li><li class="no-marker"><ul><li><a href="#Getting-started">Getting started</a></li><li><a href="#Basic-usage">Basic usage</a></li><li><a href="#Examples-of-ImageBinarization-in-action">Examples of ImageBinarization in action</a></li></ul></li><li><a href="reference/#function_reference">Function References</a></li><li class="no-marker"><ul><li><a href="reference/#General-function">General function</a></li><li><a href="reference/#Algorithms">Algorithms</a></li><li class="no-marker"><ul><li><a href="reference/#Adaptive-Threshold">Adaptive Threshold</a></li><li><a href="reference/#Niblack">Niblack</a></li><li><a href="reference/#Polysegment">Polysegment</a></li><li><a href="reference/#Sauvola">Sauvola</a></li></ul></li><li><a href="reference/#Algorithms-that-utilizes-single-histogram-threshold">Algorithms that utilizes single histogram-threshold</a></li><li class="no-marker"><ul><li><a href="reference/#Otsu">Otsu</a></li><li><a href="reference/#MinimumIntermodes">MinimumIntermodes</a></li><li><a href="reference/#Intermodes">Intermodes</a></li><li><a href="reference/#MinimumError">MinimumError</a></li><li><a href="reference/#Moments">Moments</a></li><li><a href="reference/#UnimodalRosin">UnimodalRosin</a></li><li><a href="reference/#Entropy">Entropy</a></li><li><a href="reference/#Balanced">Balanced</a></li><li><a href="reference/#Yen">Yen</a></li></ul></li></ul></li></ul><h2 id="Getting-started"><a class="docs-heading-anchor" href="#Getting-started">Getting started</a><a id="Getting-started-1"></a><a class="docs-heading-anchor-permalink" href="#Getting-started" title="Permalink"></a></h2><p>This package is part of a wider Julia-based image processing <a href="https://github.com/JuliaImages">ecosystem</a>. If you are starting out, then you may benefit from <a href="https://juliaimages.org/latest/quickstart/">reading</a> about some fundamental conventions that the ecosystem utilizes that are markedly different from how images are typically represented in OpenCV, MATLAB, ImageJ or Python.</p><p>The usage examples in the <code>ImageBinarization.jl</code> package assume that you have already installed some key packages. Notably, the examples assume that you are able to load and display an image. Loading an image is facilitated through the <a href="https://github.com/JuliaIO/FileIO.jl">FileIO.jl</a> package, which uses <a href="https://github.com/JuliaIO/QuartzImageIO.jl">QuartzImageIO.jl</a> if you are on <code>MacOS</code>, and <a href="https://github.com/JuliaIO/ImageMagick.jl">ImageMagick.jl</a> otherwise. Depending on your particular system configuration, you might encounter problems installing the image loading packages, in which case you can refer to the <a href="https://juliaimages.org/latest/troubleshooting/#Installation-troubleshooting-1">troubleshooting guide</a>.</p><p>Image display is typically handled by the <a href="https://github.com/JuliaImages/ImageView.jl">ImageView.jl</a> package. Alternatives include the various plotting packages, including <a href="https://github.com/JuliaPlots/Makie.jl">Makie.jl</a>. There is also the <a href="https://github.com/JuliaImages/ImageShow.jl">ImageShow.jl</a> package which facilitates displaying images in <code>Jupyter</code> notebooks via <a href="https://github.com/JuliaLang/IJulia.jl">IJulia.jl</a>. Finally, one can also obtain a useful preview of an image in the REPL using the <a href="https://github.com/JuliaImages/ImageInTerminal.jl">ImageInTerminal.jl</a> package. However, this package assumes that the terminal uses a monospace font, and tends not to produce adequate results in a Windows environment.</p><p>Another package that is used to illustrate the functionality in <code>ImageBinarization.jl</code> is the <a href="https://github.com/JuliaImages/TestImages.jl">TestImages.jl</a> which serves as a repository of many standard image processing test images.</p><h2 id="Basic-usage"><a class="docs-heading-anchor" href="#Basic-usage">Basic usage</a><a id="Basic-usage-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-usage" title="Permalink"></a></h2><p>Each binarization algorithm in <code>ImageBinarization.jl</code> is an <a href="reference/#ImageBinarization.BinarizationAPI.AbstractImageBinarizationAlgorithm"><code>AbstractImageBinarizationAlgorithm</code></a>.</p><p>Suppose one wants to binarize an image. This can be achieved by simply choosing an appropriate algorithm and calling <a href="reference/#ImageBinarization.BinarizationAPI.binarize"><code>binarize</code></a> or <a href="reference/#ImageBinarization.BinarizationAPI.binarize!"><code>binarize!</code></a> in the image. The background and foreground will be automatically binarized.</p><p>Let&#39;s see a simple demo:</p><pre><code class="language-julia hljs">using TestImages, ImageBinarization
+img = testimage(&quot;cameraman&quot;)
+alg = Otsu()
+img₀₁ = binarize(img, alg)</code></pre><img src="images/demo.jpg" width="400px" alt="demo image" /><p>This usage reads as &quot;<code>binarize</code> the image <code>img</code> with algorithm <code>alg</code>&quot;</p><p>For more advanced usage, please check <a href="reference/#function_reference">function reference</a> page.</p><h2 id="Examples-of-ImageBinarization-in-action"><a class="docs-heading-anchor" href="#Examples-of-ImageBinarization-in-action">Examples of ImageBinarization in action</a><a id="Examples-of-ImageBinarization-in-action-1"></a><a class="docs-heading-anchor-permalink" href="#Examples-of-ImageBinarization-in-action" title="Permalink"></a></h2><h>Image of cells:</h>
+<table width="500" border="0" cellpadding="5">
+
+<tr>
+<td align="center" valign="center">
+<img src="images/cells.jpg" width="100px" alt="Original image" />
+<br />
+Original image
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/cells_Intermodes.jpg" width="100px" alt="Intermodes" />
+<br />
+Intermodes
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_MinimumError.jpg" width="100px" alt="Minimum Error" />
+<br />
+Minimum Error
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_MinimumIntermodes.jpg" width="100px" alt="Minimum" />
+<br />
+Minimum
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/cells_Moments.jpg" width="100px" alt="Moments" />
+<br />
+Moments
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_otsu.jpg" width="100px" alt="Otsu" />
+<br />
+Otsu
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_Polysegment.jpg" width="100px" alt="Polysegment" />
+<br />
+Polysegment
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/cells_UnimodalRosin.jpg" width="100px" alt="Rosin" />
+<br />
+Rosin
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_sauvola.png" width="100px" alt="Sauvola" />
+<br />
+Sauvola
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_niblack.png" width="100px" alt="Niblack" />
+<br />
+Niblack
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/cells_Adaptive.jpg" width="100px" alt="Adaptive" />
+<br />
+Adaptive
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_Yen.jpg" width="100px" alt="Yen" />
+<br />
+Yen
+</td>
+
+<td align="center" valign="center">
+<img src="images/cells_Balanced.jpg" width="100px" alt="Balanced" />
+<br />
+Balanced
+</td>
+</tr>
+</table>
+
+<h>Image of moon surface: (Unimodal)</h>
+<table width="500" border="0" cellpadding="5">
+
+<tr>
+<td align="center" valign="center">
+<img src="images/moon.jpg" width="100px" alt="Original image" />
+<br />
+Original image
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/moon_Intermodes.jpg" width="100px" alt="Intermodes" />
+<br />
+Intermodes
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_MinimumError.jpg" width="100px" alt="Minimum Error" />
+<br />
+Minimum Error
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_MinimumIntermodes.jpg" width="100px" alt="Minimum" />
+<br />
+Minimum
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/moon_Moments.jpg" width="100px" alt="Moments" />
+<br />
+Moments
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_otsu.jpg" width="100px" alt="Otsu" />
+<br />
+Otsu
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_Polysegment.jpg" width="100px" alt="Polysegment" />
+<br />
+Polysegment
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/moon_UnimodalRosin.jpg" width="100px" alt="Rosin" />
+<br />
+Rosin
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_sauvola.png" width="100px" alt="Sauvola" />
+<br />
+Sauvola
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_niblack.png" width="100px" alt="Niblack" />
+<br />
+Niblack
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/moon_Adaptive.jpg" width="100px" alt="Adaptive" />
+<br />
+Adaptive
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_Yen.jpg" width="100px" alt="Yen" />
+<br />
+Yen
+</td>
+
+<td align="center" valign="center">
+<img src="images/moon_Balanced.jpg" width="100px" alt="Balanced" />
+<br />
+Balanced
+</td>
+</tr>
+</table>
+
+<h>Image of text:</h>
+<table width="500" border="0" cellpadding="5">
+
+<tr>
+<td align="center" valign="center">
+<img src="images/page.jpg" width="100px" alt="Original image" />
+<br />
+Original image
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/page_Intermodes.jpg" width="100px" alt="Intermodes" />
+<br />
+Intermodes
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_MinimumError.jpg" width="100px" alt="Minimum Error" />
+<br />
+Minimum Error
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_MinimumIntermodes.jpg" width="100px" alt="Minimum" />
+<br />
+Minimum
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/page_Moments.jpg" width="100px" alt="Moments" />
+<br />
+Moments
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_otsu.jpg" width="100px" alt="Otsu" />
+<br />
+Otsu
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_Polysegment.jpg" width="100px" alt="Polysegment" />
+<br />
+Polysegment
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/page_UnimodalRosin.jpg" width="100px" alt="Rosin" />
+<br />
+Rosin
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_sauvola.png" width="100px" alt="Sauvola" />
+<br />
+Sauvola
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_niblack.png" width="100px" alt="Niblack" />
+<br />
+Niblack
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="center">
+<img src="images/page_Adaptive.jpg" width="100px" alt="Adaptive" />
+<br />
+Adaptive
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_Yen.jpg" width="100px" alt="yen" />
+<br />
+Yen
+</td>
+
+<td align="center" valign="center">
+<img src="images/page_Balanced.jpg" width="100px" alt="Balanced" />
+<br />
+Balanced
+</td>
+</tr>
+</table></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="reference/">Function Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.15 on <span class="colophon-date" title="Saturday 26 March 2022 19:01">Saturday 26 March 2022</span>. Using Julia version 1.7.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
