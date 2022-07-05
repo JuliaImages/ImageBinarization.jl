@@ -16,7 +16,7 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 ColorVectorSpace = "0.6, 0.7, 0.8, 0.9"
 HistogramThresholding = "0.3"
 ImageCore = "0.8.3, 0.9"
-Polynomials = "1, 2"
+Polynomials = "1, 2, 3"
 Reexport = "0.2, 1.0"
 julia = "1"
 
