@@ -11,7 +11,6 @@ using Reexport
 using ImageCore
 using ImageCore.MappedArrays
 using ImageCore: GenericGrayImage
-using ColorVectorSpace
 
 # TODO: port BinarizationAPI to ImagesAPI
 include("BinarizationAPI/BinarizationAPI.jl")
@@ -43,7 +42,7 @@ export
     Niblack,
     Polysegment,
     Sauvola,
-    
+
     # also reexport algorithms in HistogramThresholding
     SingleHistogramThreshold
 
